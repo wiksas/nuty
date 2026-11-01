@@ -4,93 +4,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moja Biblioteka Nut</title>
+    <title>Nuty na trąbkę · WIKSAS</title>
+    <meta name="description" content="Moja biblioteka nut na trąbkę.">
+    <meta name="theme-color" content="#0d0a07">
+    <link rel="icon" type="image/png" href="logo/logo bez biale.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <div class="progress" id="progress"></div>
+    <div class="ambient" id="ambient" aria-hidden="true"></div>
 
-    <main class="container">
-        <h1 class="gallery-title">Nuty na Trąbkę</h1>
+    <header class="topbar" id="topbar">
+        <a class="logo" href="#top" aria-label="WIKSAS – na górę">
+            <img src="logo/logo bez biale.png" alt="WIKSAS">
+        </a>
+        <nav>
+            <a href="#biblioteka">Biblioteka</a>
+            <a href="#kontakt">O mnie</a>
+        </nav>
+    </header>
 
-        <div class="sheet-grid" id="gallery"></div>
+    <!-- HERO: wysoki wrapper + sticky scena; scroll steruje trąbką -->
+    <section class="hero" id="top">
+        <div class="hero-stage" id="heroStage">
+            <div class="hero-glow"></div>
+
+            <div class="hero-text" id="heroText">
+                <p class="eyebrow">Prywatny zbiór nut</p>
+                <h1>Nuty na <em>trąbkę</em></h1>
+            </div>
+
+            <svg class="trumpet" id="trumpet" viewBox="0 0 900 420" role="img" aria-label="Trąbka – kliknij, żeby zagrać">
+                <defs>
+                    <linearGradient id="brass" gradientUnits="userSpaceOnUse" x1="0" y1="50" x2="0" y2="340">
+                        <stop offset="0" stop-color="#8a5a12" />
+                        <stop offset=".28" stop-color="#ffe9a0" />
+                        <stop offset=".5" stop-color="#e0b43a" />
+                        <stop offset=".78" stop-color="#a8701a" />
+                        <stop offset="1" stop-color="#5e3a0a" />
+                    </linearGradient>
+                    <linearGradient id="brassH" gradientUnits="userSpaceOnUse" x1="520" y1="0" x2="810" y2="0">
+                        <stop offset="0" stop-color="#b98221" />
+                        <stop offset=".55" stop-color="#f3cf68" />
+                        <stop offset="1" stop-color="#ffefb8" />
+                    </linearGradient>
+                    <linearGradient id="casing" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0" stop-color="#6b440c" />
+                        <stop offset=".35" stop-color="#f4d77f" />
+                        <stop offset=".7" stop-color="#c8962b" />
+                        <stop offset="1" stop-color="#5a3808" />
+                    </linearGradient>
+                    <radialGradient id="bellInner" cx=".5" cy=".5" r=".5">
+                        <stop offset="0" stop-color="#1a0f03" />
+                        <stop offset="1" stop-color="#7a4d0c" />
+                    </radialGradient>
+                </defs>
+
+                <g>
+                    <!-- rury (rysują się przy wczytaniu) -->
+                    <g class="tubes" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <g class="draw">
+                            <path pathLength="1" d="M 70 180 H 335" />
+                            <path pathLength="1" d="M 345 258 H 150 C 78 258 78 336 150 336 H 610 C 682 336 682 258 610 258 H 448" />
+                            <path pathLength="1" d="M 200 180 V 258" class="brace" />
+                            <path pathLength="1" d="M 520 180 V 258" class="brace" />
+                        </g>
+                    </g>
+
+                    <!-- dzwon -->
+                    <path class="bell-body" d="M 455 170 C 600 170 720 152 797 56 A 22 124 0 0 1 797 304 C 720 208 600 190 455 190 Z" fill="url(#brassH)" stroke="#6b440c" stroke-width="3" />
+                    <ellipse class="bell-rim-in" cx="797" cy="180" rx="22" ry="124" fill="url(#bellInner)" stroke="#ffe9a0" stroke-width="4" />
+                    <path class="bell-shine" d="M 480 174 C 610 172 720 156 790 70" fill="none" stroke="#fff6d0" stroke-width="3" stroke-linecap="round" opacity=".55" />
+
+                    <!-- ustnik -->
+                    <path class="mouthpiece" d="M 74 172 L 44 168 Q 14 166 14 180 Q 14 194 44 192 L 74 188 Z" fill="url(#casing)" stroke="#5a3808" stroke-width="2" />
+
+                    <!-- korpus wentyli -->
+                    <g class="valves">
+                        <g class="valve" data-i="0" transform="translate(350 0)">
+                            <g class="btn"><rect x="-2.5" y="104" width="5" height="34" fill="#d8b04a" /><ellipse cx="0" cy="98" rx="17" ry="7" fill="#f4e2a0" stroke="#5a3808" stroke-width="2" /></g>
+                            <rect x="-17" y="135" width="34" height="128" rx="8" fill="url(#casing)" stroke="#4a2e06" stroke-width="2" />
+                            <rect x="-20" y="128" width="40" height="14" rx="5" fill="#f1cf6b" stroke="#4a2e06" stroke-width="2" />
+                        </g>
+                        <g class="valve" data-i="1" transform="translate(396 0)">
+                            <g class="btn"><rect x="-2.5" y="104" width="5" height="34" fill="#d8b04a" /><ellipse cx="0" cy="98" rx="17" ry="7" fill="#f4e2a0" stroke="#5a3808" stroke-width="2" /></g>
+                            <rect x="-17" y="135" width="34" height="128" rx="8" fill="url(#casing)" stroke="#4a2e06" stroke-width="2" />
+                            <rect x="-20" y="128" width="40" height="14" rx="5" fill="#f1cf6b" stroke="#4a2e06" stroke-width="2" />
+                        </g>
+                        <g class="valve" data-i="2" transform="translate(442 0)">
+                            <g class="btn"><rect x="-2.5" y="104" width="5" height="34" fill="#d8b04a" /><ellipse cx="0" cy="98" rx="17" ry="7" fill="#f4e2a0" stroke="#5a3808" stroke-width="2" /></g>
+                            <rect x="-17" y="135" width="34" height="128" rx="8" fill="url(#casing)" stroke="#4a2e06" stroke-width="2" />
+                            <rect x="-20" y="128" width="40" height="14" rx="5" fill="#f1cf6b" stroke="#4a2e06" stroke-width="2" />
+                        </g>
+                    </g>
+                </g>
+
+                <!-- fale dźwięku -->
+                <g class="waves" fill="none" stroke="#f4d77f" stroke-linecap="round">
+                    <path d="M 838 110 Q 874 180 838 250" />
+                    <path d="M 862 84 Q 912 180 862 276" />
+                    <path d="M 886 58 Q 950 180 886 302" />
+                </g>
+
+                <!-- nutki wylatujące z dzwonu -->
+                <g class="notes" id="trumpetNotes" fill="#f4d77f" font-family="'Segoe UI Symbol','Noto Sans Symbols 2',serif" font-size="46"></g>
+            </svg>
+
+            <a class="scroll-cue" id="scrollCue" href="#biblioteka">
+                <span>Przewiń</span>
+                <i></i>
+            </a>
+        </div>
+    </section>
+
+    <main>
+        <section class="library" id="biblioteka">
+            <div class="section-head reveal">
+                <p class="eyebrow">Biblioteka</p>
+                <h2>Wszystkie nuty</h2>
+                <div class="staff" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+                <p class="count"><b id="countNum">0</b> <span id="countLabel">utworów</span> · kliknij kartę, żeby otworzyć</p>
+            </div>
+
+            <div class="toolbar reveal">
+                <label class="search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg>
+                    <input id="search" type="search" placeholder="Szukaj utworu…" autocomplete="off" aria-label="Szukaj utworu">
+                </label>
+                <div class="chips" id="chips" role="tablist" aria-label="Kategorie"></div>
+            </div>
+
+            <div class="sheet-grid" id="gallery"></div>
+            <p class="empty" id="empty" hidden>Nic tu nie gra. Spróbuj innej frazy.</p>
+        </section>
     </main>
 
-<script>
+    <footer class="footer" id="kontakt">
+        <div class="footer-inner reveal">
+            <img src="logo/logo bez biale.png" alt="WIKSAS" class="footer-logo">
+            <p>Nuty na trąbkę w B – zbiór do ćwiczenia i grania.</p>
+            <p class="muted">© <span id="year"></span> WIKSAS</p>
+        </div>
+    </footer>
 
-        const files = [
-            "sciągawka.png",
-            "transpose.png",
-            "can you feel the love tonight.png",
-            "fly me to the moon.png",
-            "hejnal.png",
-            "in dreams.png",
-            "la vie en rose.png",
-            "oda do radosci.png",
-            "pure imagination.png",
-            "samba.png",
-            "symphony no.9 in E Minor, Op.95.png",
-            "take five.png",
-            "violet-evergarden-theme-song-violet-snow.pdf",
-            "Misty-Mountains-Trumpet-in-Bb.pdf",
-            "lumiere.png",
-            "hes-a-pirate.pdf",
-            "le-festin-ratatouille-for-bb-trumpet.pdf",
-            "nearer-my-god-to-thee-trumpet-quartet.pdf",
-            "pirates-of-the-caribbean-black-pearl-medley.pdf",
-            "take-five-the-dave-brubeck-quartet.pdf",
-            "themedallioncalls.pdf",
-            "up-married-life-arr-for-trumpet-1.pdf",
-            "up-married-life-arr-for-trumpet.pdf",
-            "alicia-clair-obscur-expedition-33-lorien-testard-alice-duport-percier.pdf",
-            "sea-of-thieves-bosun-bill-robin-beanland-bosun-bill-trumpet.pdf",
-        ];
-        
-        const folderPath = 'img/';
+    <button class="to-top" id="toTop" aria-label="Wróć na górę">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
+    </button>
 
-        const galleryContainer = document.getElementById('gallery');
+    <!-- Przeglądarka nut -->
+    <div class="viewer" id="viewer" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="viewerTitle">
+        <div class="viewer-backdrop" data-close></div>
+        <div class="viewer-fx" id="viewerFx" aria-hidden="true"></div>
+        <div class="viewer-panel" id="viewerPanel">
+            <div class="viewer-bar">
+                <span class="viewer-emblem" id="viewerEmblem" aria-hidden="true"></span>
+                <div class="viewer-title">
+                    <span class="viewer-tag" id="viewerTag"></span>
+                    <h3 id="viewerTitle"></h3>
+                    <span class="viewer-motto" id="viewerMotto"></span>
+                </div>
+                <div class="viewer-actions">
+                    <button id="vPrev" title="Poprzednia (←)" aria-label="Poprzednia nuta"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" /></svg></button>
+                    <button id="vNext" title="Następna (→)" aria-label="Następna nuta"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg></button>
+                    <a id="vNewTab" target="_blank" rel="noopener" title="Otwórz w nowej karcie" aria-label="Otwórz w nowej karcie"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></svg></a>
+                    <a id="vDownload" download title="Pobierz PDF" aria-label="Pobierz PDF"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" /></svg></a>
+                    <button id="vClose" title="Zamknij (Esc)" aria-label="Zamknij"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" /></svg></button>
+                </div>
+            </div>
+            <div class="viewer-body">
+                <div class="viewer-loading" id="vLoading"><img id="vPlaceholder" alt=""><span></span></div>
+                <iframe id="vFrame" title="Podgląd nut"></iframe>
+                <div class="viewer-fallback" id="vFallback" hidden>
+                    <p>Ta przeglądarka nie pokazuje PDF-ów w oknie.</p>
+                    <a id="vFallbackLink" class="btn" target="_blank" rel="noopener">Otwórz nuty</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        files.forEach(filename => {
-            const link = document.createElement('a');
-            link.href = folderPath + filename;
-            link.target = "_blank";
-            link.className = "sheet-link";
-
-            const card = document.createElement('div');
-            card.className = "sheet-card";
-
-            let mediaElement;
-            const isPdf = filename.toLowerCase().endsWith('.pdf');
-
-            if (isPdf) {
-                mediaElement = document.createElement('iframe');
-                mediaElement.src = folderPath + filename + "#toolbar=0&navpanes=0&scrollbar=0&view=FitH";
-                mediaElement.style.width = "100%";
-                mediaElement.style.height = "350px";
-                mediaElement.style.border = "none";
-                mediaElement.style.display = "block";
-                mediaElement.style.pointerEvents = "none"; 
-                
-            } else {
-                mediaElement = document.createElement('img');
-                mediaElement.src = folderPath + filename;
-                mediaElement.alt = filename;
-            }
-
-            const overlay = document.createElement('div');
-            overlay.className = "sheet-overlay";
-
-            const textDiv = document.createElement('div');
-            textDiv.className = "text";
-            textDiv.innerText = filename.replace(/\.[^/.]+$/, "");
-
-            overlay.appendChild(textDiv);
-            card.appendChild(mediaElement);
-            card.appendChild(overlay);
-            link.appendChild(card);
-            galleryContainer.appendChild(link);
-        });
-    </script>
-
+    <script src="nuty.js"></script>
+    <script src="themes.js"></script>
+    <script src="app.js"></script>
 </body>
+
 </html>
