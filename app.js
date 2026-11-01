@@ -103,39 +103,146 @@
 
     /* ====================== Kliknięcie w trąbkę: dźwięk ====================== */
     let audio;
-    const MELODY = [ // [Hz, wentyle (indeksy)]
-        [261.63, []], [329.63, [1]], [392.0, [0]], [523.25, []], [392.0, [0]], [329.63, [1]],
+    const MELODY = [ // [numer MIDI (brzmienie), wentyle (indeksy)]
+        [60, []], [64, [1]], [67, [0]], [72, []], [67, [0]], [64, [1]],
     ];
     let melodyI = 0;
 
-    function playNote(freq, dur = .7) {
+    function getAudio() {
         audio = audio || new (window.AudioContext || window.webkitAudioContext)();
         if (audio.state === 'suspended') audio.resume();
-        const t = audio.currentTime;
-        const out = audio.createGain();
-        const filter = audio.createBiquadFilter();
+        return audio;
+    }
+
+    // Częstotliwości (Hz) nut oktawy 4, równomierna skala, A4 = 440 Hz (pianogrid.com, tunableapp.com).
+    // Inne oktawy = mnożenie/dzielenie przez 2. Numer MIDI: C4 = 60, A4 = 69.
+    const HZ4 = [261.63, 277.18, 293.66, 311.13, 329.63, 349.23, 369.99, 392.00, 415.30, 440.00, 466.16, 493.88];
+    const midiHz = m => HZ4[((m % 12) + 12) % 12] * Math.pow(2, Math.floor(m / 12) - 5);
+
+    // Prawdziwa trąbka: próbki FluidR3 (samples/trumpet.js), po jednej na półton; ładowane przy pierwszym użyciu
+    const bufCache = new Map();
+    let samplesLoading;
+    function loadSamples() {
+        if (window.TRUMPET_SAMPLES) return Promise.resolve();
+        samplesLoading = samplesLoading || new Promise((ok, fail) => {
+            const s = document.createElement('script');
+            s.src = 'samples/trumpet.js';
+            s.onload = ok;
+            s.onerror = () => { samplesLoading = null; fail(new Error('brak próbek')); };
+            document.head.appendChild(s);
+        });
+        return samplesLoading;
+    }
+    async function sampleFor(midi) {
+        const keys = Object.keys(window.TRUMPET_SAMPLES).map(Number);
+        const key = keys.reduce((a, k) => Math.abs(k - midi) < Math.abs(a - midi) ? k : a);
+        if (!bufCache.has(key)) {
+            bufCache.set(key, (async () => {
+                const bin = atob(window.TRUMPET_SAMPLES[key].split(',')[1]);
+                const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+                return getAudio().decodeAudioData(bytes.buffer);
+            })());
+        }
+        return { buf: await bufCache.get(key), rate: Math.pow(2, (midi - key) / 12) };
+    }
+    // wspólny tor wyjściowy: lekki pogłos + kompresor (próbki są ciche i bez „sali”)
+    let chain;
+    function masterIn() {
+        const ctx = getAudio();
+        if (chain && chain.ctx === ctx) return chain.input;
+        const input = ctx.createGain();
+        const comp = ctx.createDynamicsCompressor();
+        comp.threshold.value = -16; comp.ratio.value = 4; comp.attack.value = .005; comp.release.value = .2;
+        const conv = ctx.createConvolver();
+        const len = Math.floor(ctx.sampleRate * 1.3);
+        const ir = ctx.createBuffer(2, len, ctx.sampleRate);
+        for (let c = 0; c < 2; c++) {
+            const d = ir.getChannelData(c);
+            for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.2);
+        }
+        input.connect(comp);
+        try { // pogłos opcjonalny (niektóre środowiska raportują niezgodny sampleRate)
+            conv.buffer = ir;
+            const wet = ctx.createGain();
+            wet.gain.value = .2;
+            input.connect(conv); conv.connect(wet); wet.connect(comp);
+        } catch { /* sam kompresor */ }
+        comp.connect(ctx.destination);
+        chain = { ctx, input };
+        return input;
+    }
+
+    const SAMPLE_GAIN = 6; // próbki mają RMS ok. 0.025
+    function playSample(s, dur, at = 0, dest) {
+        const ctx = getAudio();
+        const t = ctx.currentTime + at;
+        const src = ctx.createBufferSource();
+        src.buffer = s.buf;
+        src.playbackRate.value = s.rate;
+        if (dur + .1 > s.buf.duration / s.rate) { // dłuższa nuta niż próbka: zapętl stabilny środek
+            src.loop = true; src.loopStart = 1; src.loopEnd = s.buf.duration - .1;
+        }
+        // "tonguing": filtr otwiera się w ~90 ms, jak przy zadęciu
+        const lp = ctx.createBiquadFilter();
+        lp.type = 'lowpass'; lp.Q.value = .7;
+        lp.frequency.setValueAtTime(1100, t);
+        lp.frequency.exponentialRampToValueAtTime(14000, t + .09);
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(SAMPLE_GAIN, t + .03);
+        g.gain.linearRampToValueAtTime(SAMPLE_GAIN * .88, t + .25);
+        g.gain.setValueAtTime(SAMPLE_GAIN * .88, Math.max(t + .26, t + dur - .06));
+        g.gain.linearRampToValueAtTime(0, t + dur + .05);
+        src.connect(lp).connect(g).connect(dest || masterIn());
+        src.start(t);
+        src.stop(t + dur + .08);
+    }
+    async function honk(midi) {
+        try { await loadSamples(); playSample(await sampleFor(midi), .9); }
+        catch { playNote(midiHz(midi)); }
+    }
+    (window.requestIdleCallback || (f => setTimeout(f, 2500)))(() => loadSamples().catch(() => {}));
+
+    // at – opóźnienie (s) od teraz; sustain – nuta trzymana (odsłuch fragmentu), inaczej krótkie "dmuchnięcie"
+    function playNote(freq, dur = .7, at = 0, sustain = false, dest) {
+        const ctx = getAudio();
+        const t = ctx.currentTime + at;
+        const out = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
         filter.type = 'lowpass';
         filter.Q.value = 4;
-        filter.frequency.setValueAtTime(freq * 1.5, t);
-        filter.frequency.linearRampToValueAtTime(freq * 7, t + .09);
-        filter.frequency.exponentialRampToValueAtTime(freq * 3, t + dur);
-        out.gain.setValueAtTime(0, t);
-        out.gain.linearRampToValueAtTime(.34, t + .05);
-        out.gain.exponentialRampToValueAtTime(.001, t + dur);
-        const vib = audio.createOscillator();
-        const vibAmt = audio.createGain();
+        const vib = ctx.createOscillator();
+        const vibAmt = ctx.createGain();
         vib.frequency.value = 5.2;
-        vibAmt.gain.value = freq * .006;
+        if (sustain) {
+            filter.frequency.setValueAtTime(freq * 2.2, t);
+            filter.frequency.linearRampToValueAtTime(freq * 6, t + .08);
+            filter.frequency.linearRampToValueAtTime(freq * 4, t + dur);
+            out.gain.setValueAtTime(.0001, t);
+            out.gain.linearRampToValueAtTime(.3, t + .035);
+            out.gain.setValueAtTime(.27, Math.max(t + .04, t + dur - .07));
+            out.gain.linearRampToValueAtTime(.0001, t + dur);
+            vibAmt.gain.setValueAtTime(0, t);
+            vibAmt.gain.linearRampToValueAtTime(freq * .005, t + Math.max(.05, Math.min(.4, dur * .7)));
+        } else {
+            filter.frequency.setValueAtTime(freq * 1.5, t);
+            filter.frequency.linearRampToValueAtTime(freq * 7, t + .09);
+            filter.frequency.exponentialRampToValueAtTime(freq * 3, t + dur);
+            out.gain.setValueAtTime(0, t);
+            out.gain.linearRampToValueAtTime(.34, t + .05);
+            out.gain.exponentialRampToValueAtTime(.001, t + dur);
+            vibAmt.gain.value = freq * .006;
+        }
         vib.connect(vibAmt);
         [['sawtooth', 0], ['square', 4]].forEach(([type, detune]) => {
-            const o = audio.createOscillator();
-            const g = audio.createGain();
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
             o.type = type; o.detune.value = detune; g.gain.value = type === 'square' ? .35 : 1;
             vibAmt.connect(o.frequency);
             o.connect(g).connect(filter);
             o.start(t); o.stop(t + dur + .05);
         });
-        filter.connect(out).connect(audio.destination);
+        filter.connect(out).connect(dest || masterIn());
         vib.start(t); vib.stop(t + dur + .05);
     }
 
@@ -155,8 +262,8 @@
     }
 
     trumpet.addEventListener('click', () => {
-        const [freq, hit] = MELODY[melodyI++ % MELODY.length];
-        playNote(freq);
+        const [midi, hit] = MELODY[melodyI++ % MELODY.length];
+        honk(midi);
         hit.forEach(i => { valves[i].classList.add('hit'); setTimeout(() => valves[i].classList.remove('hit'), 320); });
         trumpet.classList.remove('honk'); void trumpet.getBoundingClientRect(); trumpet.classList.add('honk');
         spawnNote(); if (Math.random() > .4) setTimeout(spawnNote, 120);
@@ -378,6 +485,9 @@
         $('#viewerTitle').textContent = n.title;
         $('#viewerTag').textContent = `${n.tag} · ${n.pages} str.`;
         applyTheme(n);
+        stopPlayer();
+        vPlay.hidden = !(n.audio || n.melody);
+        vPlay.title = n.audio ? 'Posłuchaj nagrania' : 'Posłuchaj początku (syntezator)';
         const href = encodeURI(n.file);
         const name = n.file.split('/').pop();
         $('#vNewTab').href = href;
@@ -450,6 +560,7 @@
         document.body.classList.remove('viewer-open');
         clearTimeout(loadTimer);
         clearTimeout(srcTimer);
+        stopPlayer();
         closeTimer = setTimeout(() => { frame.src = 'about:blank'; frame.classList.remove('ready'); fxEl.replaceChildren(); }, 450);
         if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
     }
@@ -483,6 +594,98 @@
             if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
             else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
         }
+    });
+
+    /* ====================== Odsłuch fragmentu nut ====================== */
+    const vPlay = $('#vPlay');
+    const progressEl = $('#viewerProgress');
+    const emblemEl = $('#viewerEmblem');
+    const TRANSPOSE = -2; // trąbka w B brzmi o sekundę wielką niżej niż zapis
+    const SEMI = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+    let player = null;
+
+    function parseMelody(m) {
+        const ev = [];
+        let beat = 0;
+        for (const tok of m.notes.trim().split(/\s+/)) {
+            const [p, d] = tok.split(':');
+            const b = parseFloat(d);
+            if (!(b > 0)) continue;
+            const mm = /^([A-G])([#b]?)(-?\d)$/.exec(p);
+            if (mm) ev.push({ beat, b, midi: 12 * (+mm[3] + 1) + SEMI[mm[1]] + (mm[2] === '#' ? 1 : mm[2] === 'b' ? -1 : 0) + TRANSPOSE });
+            beat += b;
+        }
+        return { ev, total: beat };
+    }
+
+    function stopPlayer() {
+        if (!player) return;
+        player.stop();
+        player = null;
+        vPlay.classList.remove('playing');
+        progressEl.style.transform = 'scaleX(0)';
+        emblemEl.style.transform = '';
+    }
+
+    async function startPlayer(n) {
+        stopPlayer();
+        vPlay.classList.add('playing');
+        const me = { cancelled: false, stop() { this.cancelled = true; } };
+        player = me;
+        if (n.audio) {
+            const a = new Audio(encodeURI(n.audio));
+            a.addEventListener('timeupdate', () => {
+                progressEl.style.transform = `scaleX(${a.duration ? clamp(a.currentTime / a.duration) : 0})`;
+            });
+            a.addEventListener('ended', stopPlayer);
+            a.play().catch(stopPlayer);
+            me.stop = () => { a.pause(); a.removeAttribute('src'); a.load(); };
+            return;
+        }
+        const ctx = getAudio();
+        const spb = 60 / n.melody.bpm;
+        const { ev, total } = parseMelody(n.melody);
+
+        // prawdziwa trąbka; gdy próbki się nie wczytają – syntezator
+        vPlay.classList.add('loading');
+        let samples = null;
+        try {
+            await loadSamples();
+            samples = new Map(await Promise.all([...new Set(ev.map(e => e.midi))].map(async m => [m, await sampleFor(m)])));
+        } catch { /* syntezator */ }
+        vPlay.classList.remove('loading');
+        if (me.cancelled) return;
+
+        const bus = ctx.createGain();
+        bus.gain.value = .9;
+        bus.connect(masterIn());
+        const lead = .12;
+        ev.forEach(e => {
+            const dur = e.b * spb * .96, at = lead + e.beat * spb;
+            if (samples) playSample(samples.get(e.midi), dur, at, bus);
+            else playNote(midiHz(e.midi), dur, at, true, bus);
+        });
+        const t0 = ctx.currentTime + lead;
+        let raf = 0;
+        const loop = () => {
+            const el = ctx.currentTime - t0;
+            progressEl.style.transform = `scaleX(${clamp(el / (total * spb))})`;
+            const cur = ev.findLast ? ev.findLast(e => e.beat * spb <= el) : null;
+            if (cur) emblemEl.style.transform = `scale(${1 + .16 * Math.max(0, 1 - (el - cur.beat * spb) / .3)})`;
+            if (el >= total * spb) stopPlayer(); else raf = requestAnimationFrame(loop);
+        };
+        raf = requestAnimationFrame(loop);
+        me.stop = () => {
+            me.cancelled = true;
+            cancelAnimationFrame(raf);
+            bus.gain.setTargetAtTime(0, ctx.currentTime, .03);
+            setTimeout(() => bus.disconnect(), 300);
+        };
+    }
+
+    vPlay.addEventListener('click', () => {
+        if (player) stopPlayer();
+        else if (current >= 0) startPlayer(list[current]);
     });
 
     /* ====================== Start ====================== */

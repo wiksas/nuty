@@ -16,6 +16,9 @@ Statyczna strona-dysk z nutami na trąbkę (GitHub Pages, repo `wiksas/nuty`, ga
 | `logo/` | Logo WIKSAS (`logo bez biale.png` jest używane na stronie) |
 | `tools/build.py` | Skanuje `img/`, robi miniatury, generuje `nuty.js` |
 | `tools/meta.json` | Tytuł, kategoria i motyw każdej nuty (ręcznie edytowany) |
+| `tools/melodies.json` | Zapis początku melodii (do odsłuchu), klucz = id nuty |
+| `samples/trumpet.js` | Próbki prawdziwej trąbki (po jednej na półton, MIDI 48–89), ładowane przy pierwszym odsłuchu |
+| `audio/<id>.mp3` | Opcjonalne nagranie nuty (też `.ogg`, `.m4a`, `.wav`); ma pierwszeństwo przed melodią z `melodies.json` |
 
 ## Dodawanie nowej nuty (standardowa procedura)
 
@@ -36,6 +39,33 @@ Statyczna strona-dysk z nutami na trąbkę (GitHub Pages, repo `wiksas/nuty`, ga
 5. Commit + push na `main` (GitHub Pages sam wdroży). Commituj razem: PDF, `thumbs/`, `nuty.js`, `tools/meta.json`.
 
 Usunięcie nuty: skasuj PDF z `img/`, usuń wpis z `meta.json` (opcjonalnie), uruchom `build.py`.
+
+## Odsłuch fragmentu (przycisk ▶ w oknie nut)
+
+Przycisk jest widoczny, gdy nuta ma `audio` (nagranie) albo `melody` (syntezator). Oba pola dodaje `build.py`.
+
+- **Nagranie (najlepsza opcja):** wrzuć plik do `audio/` pod nazwą `<id>.mp3`, gdzie `<id>` = slug nazwy PDF (widać go w `nuty.js` w polu `id` albo w adresie `index.html#<id>`). Uruchom `build.py`.
+- **Syntezator:** wpis w `tools/melodies.json`:
+  ```json
+  "<id>": {"bpm": 76, "notes": "B3:1 E4:2 F#4:1.5 R:1 ..."}
+  ```
+  `notes` = tokeny `NUTA:DŁUGOŚĆ` oddzielone spacją. Wysokość jak **zapisana w nutach** trąbki w B (środkowe C = `C4`, krzyżyki/bemole jawnie, np. `F#4`, `Bb4`), długość w ćwierćnutach (`0.5` ósemka, `1.5` ćwierćnuta z kropką, `0.3333` triola ósemkowa), pauza `R:2`. Nuty złączone ligą sumuj w jedną. Odtwarzacz sam obniża całość o wielką sekundę (trąbka w B brzmi niżej niż zapis; np. zapisane C4 = 261,63 Hz brzmi jak B♭3 = 233,08 Hz).
+- **Dźwięk:** nuty grają próbki prawdziwej trąbki z `samples/trumpet.js` (FluidR3_GM, licencja CC BY 3.0 – wymaga podania autora, jest w stopce strony; opakowane przez `gleitz/midi-js-soundfonts`, MIT). Każda próbka jest dostrojona do tabeli Hz równomiernej skali A4 = 440 Hz (`HZ4` w `app.js`; sprawdzone autokorelacją). Gdy próbki się nie wczytają, działa syntezator awaryjny (`playNote`).
+- Melodie w `melodies.json` zostały przepisane z obrazów pierwszych taktów (około 10–30 s) i sprawdzone drugi raz, ale nadal mogą zawierać błędy; nagranie w `audio/` je zastępuje. Nuty bez melodii i bez nagrania (Ściągawka, Skale) nie mają przycisku.
+
+### Dodawanie melodii nowej nuty (workflow)
+
+1. Wyrenderuj górną połowę 1. strony PDF (PyMuPDF, ok. 1400–1800 px szerokości) i przepisz początek partii trąbki do `tools/melodies.json` (ok. 8 taktów, maks. ~40 ćwierćnut; pomiń początkowe pauzy; przy partyturze weź górną linię trąbki; ligi tej samej wysokości sumuj).
+2. **Sprawdź sumę każdego taktu** (musi dać metrum; takt przedtaktu jest krótszy) i wysokości (zapis w kluczu wiolinowym, uwzględnij znaki przykluczowe i znaki w takcie). Najczęstsze błędy: brakujące całotaktowe pauzy w środku frazy (przesuwają resztę), pomylone C#4/B3 na linii dodanej, pominięty krzyżyk z przykluczy.
+3. Zrób niezależną drugą weryfikację (drugi przegląd obrazu nuta po nucie); poprzednio drugi przegląd wyłapał 3 błędy w 26 utworach.
+4. Tempo `bpm` weź z oznaczenia w nutach, a gdy go nie ma – dobierz wg charakteru utworu; nie zmieniaj go bez prośby (obecne tempa zostały zaakceptowane).
+5. `python tools/build.py` i przetestuj przycisk ▶ w oknie nuty.
+
+Pułapki odsłuchu:
+- Próbki mają ciche poziomy (RMS ≈ 0,025) – stała `SAMPLE_GAIN` w `app.js` je podbija; po zmianie źródła próbek sprawdź poziom wyjścia, żeby nie przesterować.
+- Pogłos (`ConvolverNode`) jest opcjonalny (`try/catch` w `masterIn`), bo przeglądarki bez ekranu (testy automatyczne) zgłaszają niezgodny `sampleRate` i rzucają wyjątek. Nie usuwaj `try/catch`.
+- Zmiana tabeli Hz lub transpozycji (`TRANSPOSE = -2` w `app.js`) zmienia brzmienie wszystkich melodii. Trąbka w B: zapisane C brzmi jak B♭ poniżej.
+- Nie wczytuj `samples/trumpet.js` synchronnie w `<head>` – to 1,4 MB; ładuje się leniwie / w czasie bezczynności.
 
 ## Dodawanie / zmiana motywu
 
@@ -63,6 +93,7 @@ nazwa: { c1: '#hex', c2: '#hex', emblem: '🎺', motto: 'Podpis w oknie (może b
   - ładowania PDF do `iframe` w trakcie animacji otwarcia (jest celowe opóźnienie 380 ms w `openViewer`).
   Animuj tylko `transform` i `opacity`.
 - Elementy scroll-efektów hero: `.hero` ma 200vh, `.hero-stage` jest `sticky`; postęp `p` (0–1) liczy `update()` w `app.js` i ustawia zmienne CSS `--p`, `--sc`, `--rot`, `--tx`, `--ty`.
+- Przycisk ▶ i efekty w oknie nut korzystają z jednego `AudioContext` (`getAudio()`); wszystko trafia przez `masterIn()` (kompresor + pogłos). Nowe dźwięki podłączaj tam, nie do `ctx.destination`.
 - Okno podglądu używa natywnego viewera PDF w `iframe`. Gdy `navigator.pdfViewerEnabled === false` (część mobilnych przeglądarek), pokazuje przycisk „Otwórz nuty” w nowej karcie.
 - Adres nuty to `index.html#<id>` (id = slug nazwy pliku PDF). Zmiana nazwy pliku zmienia link do nuty.
 - Zmiany tekstów/UI po polsku, w stylu istniejącym (krótko, bez emoji w komunikatach – emoji tylko jako emblematy motywów).

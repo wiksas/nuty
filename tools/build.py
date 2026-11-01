@@ -25,6 +25,11 @@ default_theme = meta.get("default_theme", "default")
 tag_order = meta.get("tag_order", [])
 pieces = meta.get("pieces", {})
 
+AUDIO = ROOT / "audio"
+AUDIO_EXT = (".mp3", ".ogg", ".m4a", ".wav")
+melodies_path = ROOT / "tools" / "melodies.json"
+melodies = json.loads(melodies_path.read_text(encoding="utf-8")) if melodies_path.exists() else {}
+
 
 def slug(name: str) -> str:
     s = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode()
@@ -59,7 +64,7 @@ for pdf in sorted(IMG.glob("*.pdf"), key=lambda p: p.name.lower()):
             pages = doc.page_count
     else:
         pages = make_thumb(pdf, thumb)
-    items.append({
+    item = {
         "id": sl,
         "file": f"img/{pdf.name}",
         "title": m.get("title") or pretty(pdf.stem),
@@ -67,7 +72,15 @@ for pdf in sorted(IMG.glob("*.pdf"), key=lambda p: p.name.lower()):
         "theme": m.get("theme", default_theme),
         "pages": pages,
         "thumb": f"thumbs/{thumb.name}",
-    })
+    }
+    # nagranie (audio/<id>.mp3 itd.) ma pierwszeństwo przed melodią z syntezatora
+    rec = next((f for e in AUDIO_EXT if (f := AUDIO / f"{sl}{e}").exists()), None)
+    if rec:
+        item["audio"] = f"audio/{rec.name}"
+    elif melodies.get(sl, {}).get("notes"):
+        mel = melodies[sl]
+        item["melody"] = {"bpm": mel["bpm"], "notes": mel["notes"]}
+    items.append(item)
 
 for old in THUMBS.glob("*.webp"):
     if old.name not in used:

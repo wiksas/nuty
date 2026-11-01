@@ -1,0 +1,184 @@
+{
+ "alicia-clair-obscur-expedition-33-lorien-testard-alice-duport-percier": {
+  "bpm": 70,
+  "time": "3/4",
+  "bars": 13,
+  "notes": "R:1.5 F4:0.5 E4:0.5 F4:0.5 A4:1 F4:0.5 G4:1 R:0.5 R:0.5 Bb4:0.5 A4:0.5 G4:0.5 F4:0.5 E4:0.5 C4:2.5 R:0.5 R:3 R:0.5 G3:0.5 D4:0.5 G4:0.5 Bb4:0.5 D5:0.5 E5:2 D5:0.5 C#5:0.5 D5:2 R:0.5 A4:0.5 G4:2 E5:0.5 D5:0.5 F4:2 C5:0.5 Bb4:0.5 D4:3 R:0.5 D4:0.5 F4:0.5 A4:0.5 D5:0.5 F5:0.5 E5:2.5 F5:0.5",
+  "note": "Initial 3-bar multirest (9 beats) omitted; starts at the first music bar (bar 4 of score). Tied-vs-slurred same-pitch pairs (bars 10, 16) assumed ties."
+ },
+ "can-you-feel-the-love-tonight": {
+  "bpm": 60,
+  "time": "4/4",
+  "bars": 6,
+  "notes": "B4:2 A4:1 D5:1 C5:2 C5:0.5 B4:0.5 G4:0.5 D4:0.5 E4:2 D4:0.5 G4:0.5 D4:0.5 B3:0.5 A3:1 B3:1 D4:2 E4:0.5 F#4:0.25 G4:0.75 A4:0.25 G4:0.5 D4:0.75 R:1 E4:0.5 F#4:0.25 G4:0.5 A4:0.5 G4:1.25 R:1",
+  "note": "Bar 6 rhythm fixed: G 0.75 A 0.25 -> G 0.5 A 0.5 (16th-8th-16th group around A)."
+ },
+ "cant-help-falling-in-love-with-you-bb-trumpet-part": {
+  "bpm": 72,
+  "time": "4/4",
+  "bars": 6,
+  "notes": "D4:1.5 A4:1.5 D4:2 E4:0.5 F#4:0.5 G4:1.5 F#4:1.5 E4:2.5 A3:0.5 B3:1.5 C#4:1.5 D4:1.5 E4:0.5 F#4:0.5 G4:0.5 F#4:1.5 E4:1.5 D4:2 R:1",
+  "note": ""
+ },
+ "do-you-hear-the-people-sing-les-miserables": {
+  "bpm": 80,
+  "time": "4/4",
+  "bars": 8,
+  "notes": "B4:0.75 A4:0.25 G4:0.75 A4:0.25 B4:0.75 C5:0.25 D5:1 B4:0.3333 A4:0.3333 G4:0.3333 F#4:0.75 E4:0.25 F#4:0.75 G4:0.25 D4:1 E4:0.3333 D4:0.3333 C4:0.3333 B3:0.75 D4:0.25 G4:0.75 B4:0.25 A4:0.75 G#4:0.25 A4:0.75 E4:0.25 G4:0.75 F#4:0.25 F#4:0.75 G4:0.25 A4:1 B4:0.75 A4:0.25 G4:0.75 A4:0.25 B4:0.75 C5:0.25 D5:1 B4:0.3333 A4:0.3333 G4:0.3333 F#4:0.75 E4:0.25 F#4:0.75 G4:0.25 D4:1 E4:0.3333 D4:0.3333 C4:0.3333",
+  "note": "Pickup (bar 1 half+quarter rest, 3 beats) omitted; starts at pickup B4 A4, then bars 2-8 (7 full bars + pickup). Bar 4 low note read as B3 and bar-4 pattern (B3 D4 G4 B4 A4 G#4 A4 E4) is uncertain-ish."
+ },
+ "fly-me-to-the-moon": {
+  "bpm": 110,
+  "time": "4/4",
+  "bars": 8,
+  "notes": "D5:1.5 C#5:0.5 B4:1 A4:0.5 G4:1 A4:1.5 D5:1 D5:1 C#5:1.5 B4:0.5 A4:1 B4:0.5 F#4:4.5 B4:1.5 A4:0.5 G4:1 F#4:0.5 E4:1 F#4:1.5 G4:1 B4:1 A#4:1.5 G4:0.5 F#4:1 E4:0.5 D4:3.5 D#4:1",
+  "note": "Bar 2 has a note cluster/chord and repeat sign; took upper notes (A4, D5) - uncertain. Bar 7-8 accidentals (A#4, D#4) read from image, moderately uncertain. Tempo not marked; chose 110."
+ },
+ "ghiblies": {
+  "bpm": 120,
+  "time": "3/4",
+  "bars": 11,
+  "notes": "F#4:1 A4:1 R:0.5 F#4:0.5 G4:1 B4:1 G4:1 A4:1 C#5:1 R:0.5 C#5:0.5 C#5:1 D5:1 R:1 B4:2 B4:1 A4:1 D5:1 R:0.5 F#4:0.5 E4:3 R:3 F#4:1 A4:1 R:0.5 F#4:0.5 G4:1 B4:1 G4:1 A4:1 C#5:1 R:0.5 C#5:0.5 C#5:1 D5:1 R:1",
+  "note": "First 12 bars are rests, skipped; starts at the first melody bar (bar 13), 3/4, D major. Tempo unmarked."
+ },
+ "hejnal": {
+  "bpm": 80,
+  "time": "free",
+  "bars": 0,
+  "notes": "F4:3 A4:0.5 C5:0.5 F5:3 C5:1 A4:1 F4:1 C5:1.75 R:0.125 C5:0.125 C5:2.5 A4:0.25 C5:0.25 A4:0.25 F4:0.25 C4:2 F4:0.5 A4:0.5 C5:2.5 A4:0.5 F4:0.5 C4:2 F4:1.5 A4:0.1667 F4:0.1667 A4:0.1667 C5:2.5 A4:1 F4:1 C5:1.75 R:0.125 C5:0.125 C5:2.5 A4:2.5 C5:0.25",
+  "note": "Unmetered, F major, fermatas lengthened by hand (F4, F5, C5 halves). Crop was blank so read from the PDF at high zoom; small-note rhythms (32nd rests, double-dotted C5) are slightly uncertain."
+ },
+ "in-dreams": {
+  "bpm": 72,
+  "time": "4/4",
+  "bars": 4,
+  "notes": "D4:0.5 E4:0.5 F#4:1 A4:1 F#4:1 E4:1 D4:3 F#4:0.5 A4:0.5 B4:1 D5:1 C#5:1 A4:1 F#4:2 E4:1 D4:0.5 E4:0.5",
+  "note": "D major, starts with eighth pickup; crop shows only 3 full bars after pickup. Bar 4 end is D4 E4 eighths (second note cut at barline, fine)."
+ },
+ "its-beginning-to-look-a-lot-like-christmas": {
+  "bpm": 100,
+  "time": "4/4",
+  "bars": 8,
+  "notes": "R:3 E4:0.75 F4:0.25 G4:0.3333 A4:0.3333 G4:0.3333 F#4:0.75 G4:0.25 A4:1 C5:1 E5:1 G4:3 E5:1.5 E5:0.5 D5:1.5 C5:0.5 A4:3 A4:0.75 B4:0.25 C5:0.3333 D5:0.3333 C5:0.3333 A4:0.75 A#4:0.25 B4:2 B4:0.3333 C5:0.3333 B4:0.3333 G4:0.75 G#4:0.25 A4:1.5 A#4:0.5 B4:0.75 C5:0.25 D5:0.75 E5:0.25 D5:0.75 C5:0.25 B4:0.75 A4:0.25",
+  "note": "Top Bb trumpet; C major. Starts with 3 beats of rest then pickup. Bar 7/8 chromatic notes (A#4, G#4) read at small size; mildly uncertain."
+ },
+ "kenshi": {
+  "bpm": 108,
+  "time": "4/4",
+  "bars": 8,
+  "notes": "R:1 C#5:0.5 E5:0.5 F#5:0.5 C#5:0.5 B4:0.5 A4:0.5 B4:1 B4:0.75 A4:0.25 B4:0.5 C#5:0.5 F#4:0.5 A4:0.5 B4:1 B4:0.5 E5:0.5 C#5:1 B4:0.5 A4:0.5 G#4:1 G#4:0.75 F#4:0.25 G#4:0.5 A4:0.25 G#4:0.25 F#4:0.5 E4:0.5 F#4:1 R:1 F#4:0.5 G#4:0.5 A4:0.5 C#5:0.5 B4:1 B4:0.75 A4:0.25 B4:0.5 C#5:0.5 E5:0.5 F#5:0.5 E5:0.75 B4:0.75 A4:1.5 F#4:0.25 G#4:0.25 A4:1 B4:0.5 F#4:0.25 G#4:0.25 A4:0.5 R:2",
+  "note": "A major. Bar 7-8 tie/rhythm (E5 B4 A4 run) slightly uncertain; each bar sums to 4."
+ },
+ "lotr": {
+  "bpm": 72,
+  "time": "4/4",
+  "bars": 9,
+  "notes": "R:3 D4:0.5 E4:0.5 F#4:1 A4:1 F#4:1 E4:1 D4:3 F#4:0.5 A4:0.5 B4:1 D5:1 C#5:1 A4:1 F#4:2 E4:1 D4:0.5 E4:0.5 F#4:1 A4:1 F#4:1 E4:1 D4:3 F#4:0.5 A4:0.5 B4:2 R:0.5 B4:0.5 A4:0.5 F#4:0.5 E4:4",
+  "note": "Bar 1 starts with 3-beat rest (full bar, no pickup); slurs ignored."
+ },
+ "my-favourite-things": {
+  "bpm": 138,
+  "time": "3/4",
+  "bars": 12,
+  "notes": "E4:1 B4:1 B4:1 F#4:1 E4:1 E4:1 B3:1 E4:1 E4:1 F#4:1 E4:1 R:1 E4:1 B4:1 B4:1 F#4:1 E4:1 E4:1 B3:1 E4:1 E4:1 F#4:1 E4:1 R:1 E4:1 B4:1 A4:1 E4:1 F#4:1 D4:1 D4:1 A4:1 G4:1 C4:3",
+  "note": "Bar 12 dotted half read as C4 (ledger line); verify. Repeat played straight through."
+ },
+ "nearer-my-god-to-thee-trumpet-quartet": {
+  "bpm": 70,
+  "time": "4/4",
+  "bars": 6,
+  "notes": "A4:0.25 B4:0.25 C#5:0.25 D5:0.25 E5:2 F#5:1 E5:1 E5:1.5 C#5:0.5 E5:2 E5:2 F#5:1 E5:1 E5:1.5 C#5:0.5 B4:2 C#5:2 B4:1 A4:1 A4:1.5 F#4:0.5 F#4:2",
+  "note": "Trumpet 1 rests bars 1-7; starts with 4-sixteenth pickup (bar 8, pitches A4 B4 C#5 D5 estimated), then bars 9-14 from the first staff of system 2. Stopped before bar 15 (unclear flat accidental). Total ~25 beats."
+ },
+ "pan-jest-moca-swojego-ludu-pan-jest-moca-swojego-ludu": {
+  "bpm": 75,
+  "time": "3/4",
+  "bars": 6,
+  "notes": "R:2 F4:0.5 G4:0.5 A4:1 A4:0.5 A4:0.5 G4:0.5 F4:0.5 D4:1 C4:1 F4:0.5 G4:0.5 A4:1 A4:1 F4:1 G4:1.5 R:0.5 C4:0.5 C4:0.5 D4:1.5 D4:0.5 E4:0.25 D4:0.25 E4:0.5",
+  "note": "Soprano line, F major (Bb key sig, no Bb used). Bar 1 has 2-beat rest."
+ },
+ "pure-imagination": {
+  "bpm": 72,
+  "time": "4/4",
+  "bars": 8,
+  "notes": "D4:1 F4:1 C5:2 D4:1 F4:1 C5:2 D4:1 F4:1 E5:1.5 F5:0.5 E5:0.5 F5:0.5 E5:0.5 F5:0.5 E5:1 C5:1 D4:1 F4:1 A4:2 Bb4:1 C5:1 A4:2 G4:1 F4:1 E4:0.5 F4:0.5 E4:0.5 F4:0.5 E4:1 C4:3 D4:1 F4:1",
+  "note": "2-beat pickup D4 F4, then 8 bars (first repeat start). Bar 7 C4 tied into bar 8 merged to C4:3. Bar 3 rhythm: dotted quarter E5, eighth F5, then E F E F eighths."
+ },
+ "samba": {
+  "bpm": 112,
+  "time": "4/4",
+  "bars": 9,
+  "notes": "R:1 B3:1 D4:1.5 B3:0.5 E4:1 D4:0.5 E4:0.5 F#4:1.5 D4:0.5 B3:1 B3:1 D4:1 F#4:1 B4:1 A4:0.5 B4:0.5 C#5:1.5 A4:0.5 F#4:1 F#4:1 B4:1 F#4:1 E4:1 D4:0.5 E4:0.5 F#4:1 D4:1 B3:1 B4:1 D5:1 B4:1 B4:1 A4:0.5 B4:0.5 C#5:1 A4:1 B4:3 R:1",
+  "note": "Replaced the four low C#4 notes (bar 1 first note, bar 3 first two, bar 7 first) with B3, which sits under the ledger line for C4."
+ },
+ "star-wars": {
+  "bpm": 76,
+  "time": "4/4",
+  "bars": 8,
+  "notes": "B3:1 E4:2 F#4:1.5 G4:0.25 A4:0.25 G4:2 B3:1 B3:1 E4:1.5 F#4:0.5 G4:0.5 B3:0.5 G4:0.3333 E4:0.3333 B4:0.3333 A4:3 B3:1 E4:1.5 F#4:0.5 G4:0.75 E4:0.25 B4:0.75 G4:0.25 E5:2 E4:1 G4:0.3333 F#4:0.3333 E4:0.3333 B4:1.3333 G4:0.3333 E4:0.3333 B3:1 B3:0.75 B3:0.25 E4:4",
+  "note": "Pickup quarter + 8 bars, key G major (first system only). Pitch of low B3 inferred from staff position relative to E4."
+ },
+ "take-five": {
+  "bpm": 160,
+  "time": "5/4",
+  "bars": 8,
+  "notes": "R:3 C4:0.5 F4:0.5 Ab4:0.5 Bb4:0.5 B4:0.5 C5:0.5 B4:0.5 Bb4:0.5 Ab4:1 C4:1 Eb4:1 F4:3 G4:0.25 Ab4:0.25 G4:0.25 F4:0.25 Eb4:1 F4:3 Eb4:0.25 F4:0.25 Eb4:0.25 C4:0.25 Bb3:1 C4:3 C4:0.5 F4:0.5 Ab4:0.5 Bb4:0.5 B4:0.5 C5:0.5 B4:0.5 Bb4:0.5 Ab4:1 C4:1 Eb4:1 F4:3 Eb4:0.25 F4:0.25 Eb4:0.25 C4:0.25 Bb3:1 C4:3 G4:0.25 Ab4:0.25 G4:0.25 F4:0.25 Eb4:1",
+  "note": "Key Ab major (4 flats), 5/4. First bar is 3 beats of rests + 4 eighths. Bars 1-8 only; swing not applied (straight values). Some 16th-note pitches (bars 3-4, 7-8) read at low image resolution."
+ },
+ "taniec-eleny": {
+  "bpm": 110,
+  "time": "4/4",
+  "bars": 8,
+  "notes": "B4:2 B4:2 A4:0.5 B4:0.5 E4:3 D5:1 C#5:1 B4:1 C#5:1 F#4:2 F#4:2 F#4:3 G4:1 A4:0.5 G4:0.5 F#4:0.5 D4:2.5 E4:1 E4:1 R:1 D4:1 E4:2 E4:2",
+  "note": "Key D major. Skipped the two opening bars of rests; starts at first sounding bar (repeat sign ignored); 8 bars to end of first repeat. Low-res: octave of the B4/E4 notes assumed from staff lines."
+ },
+ "the-game-is-on": {
+  "bpm": 240,
+  "time": "4/4",
+  "bars": 10,
+  "notes": "D4:1 A4:1 R:1 A4:1 Ab4:0.5 A4:0.5 Bb4:2 A4:1 G4:1 D5:7 G4:1 D5:1 R:1 D5:1 C#5:0.5 D5:0.5 E5:2 D5:1 F5:8 A5:1 D5:1 R:1 D5:1 E5:1 F5:1 E5:0.25 F5:0.25 E5:0.25 D5:1.25",
+  "note": "Key F major/D minor (1 flat); tempo marked 'Quick (240 bpm)'. First bar (D4 A4 R A4) is a full 4/4 bar. Grace notes ignored. Pitch of opening D4 inferred from staff position."
+ },
+ "themedallioncalls": {
+  "bpm": 90,
+  "time": "3/4",
+  "bars": 8,
+  "notes": "R:1 E4:1 F#4:1 G4:1.5 A4:0.5 B4:1 A4:1 G4:1 F#4:1 G4:1 A4:1 B4:1 A4:1.5 R:0.5 G4:0.5 A4:0.5 B4:1.5 A4:0.5 G4:1 F#4:1 G4:1 F#4:1 E4:1.5 E4:0.5 D4:1",
+  "note": "G major; first bar starts with a quarter rest"
+ },
+ "time-lfows": {
+  "bpm": 100,
+  "time": "3/4",
+  "bars": 12,
+  "notes": "F#5:1.5 E5:0.5 D5:1 E5:1.5 D5:0.5 C#5:1 D5:1 C#5:1 B4:0.5 A4:0.5 F#4:2 F#4:0.5 G#4:0.5 A4:1.5 F#4:0.5 A4:1 B4:1 F#4:1 E4:1 F#4:3 C#5:2 R:1 F#5:1.5 E5:0.5 D5:1 E5:2 A5:1.5 B5:0.5 A5:1 F#5:1 F#5:2 R:1",
+  "note": "A major; two opening rest bars omitted; A5 tied across bars 12-13"
+ },
+ "violet-evergarden-theme-song-violet-snow": {
+  "bpm": 100,
+  "time": "4/4",
+  "bars": 8,
+  "notes": "R:2.5 B4:0.5 A4:0.75 G#4:0.25 F#4:0.5 E4:1.5 R:0.5 F#4:0.5 G#4:0.5 B4:0.5 D5:1.5 E5:0.25 D5:0.25 C#5:1.5 B4:0.5 B4:0.5 A4:0.25 A4:1.25 R:0.5 G#4:0.5 F#4:0.5 E4:0.5 G#4:1 R:0.5 A4:0.25 G#4:0.25 F#4:1 R:0.5 G#4:0.5 E4:1 R:0.5 E4:0.5 F#4:1 R:0.5 G#4:0.25 A4:0.25 B4:0.5 E4:0.5 D#4:0.5 E4:0.5 D#5:1 C#5:0.5 B4:0.5 B4:3 R:0.5 F#4:0.25 G#4:0.25",
+  "note": "Bar1 whole rest omitted; bar 2-8 rhythms with 16ths/ties were read approximately (bars 5-6 less certain)"
+ },
+ "wilcza-zamiec": {
+  "bpm": 110,
+  "time": "4/4",
+  "bars": 10,
+  "notes": "B4:1 E4:0.5 B4:0.5 A4:1 E4:0.5 F#4:0.5 G4:0.5 F#4:0.5 G4:1 F#4:1 R:0.5 B4:0.5 B4:1 D5:1 A4:1 B4:1 A4:1 F#4:0.5 G4:0.5 A4:1 B4:1 R:4 R:0.5 G4:0.5 F#4:0.5 G4:0.5 A4:1.5 F#4:0.5 G4:0.5 F#4:0.5 G4:0.5 F#4:0.5 G4:0.5 F#4:0.5 G4:0.5 F#4:0.5 A4:1 G4:0.5 F#4:0.5 G4:1 R:0.5 F#4:0.5 G4:2 E4:0.5 F#4:0.5 G4:0.5 A4:0.5 B4:1 E4:2 E4:0.5 F#4:0.5",
+  "note": "Inserted the missing full-bar rest (R:4, bar 9) between bars 8 and 10 so the second phrase is not early; bars 9 to 10 total."
+ },
+ "you-raise-me-up": {
+  "bpm": 70,
+  "time": "4/4",
+  "bars": 9,
+  "notes": "C4:0.5 C4:0.5 F4:0.5 A4:1.5 F4:0.5 G4:0.5 F4:0.5 F4:0.5 D4:0.5 C4:0.5 F4:1.5 R:0.5 E4:0.5 F4:0.5 A4:0.5 C5:1.5 F4:0.5 D5:0.5 C5:0.5 C5:0.5 A4:0.5 G4:2 R:0.5 C5:0.5 C5:0.5 E5:0.5 F5:1.5 Bb4:0.5 E5:0.5 D5:0.5 C5:0.5 Bb4:0.5 C5:1 F4:1 R:0.5 E4:0.5 F4:0.5 G4:0.5 A4:1.5 C4:0.5 A4:0.5 G4:0.5 F4:0.5 E4:0.5 F4:2 R:0.5 C5:0.5 D5:0.5 E5:0.5",
+  "note": "F major; opening half+eighth rest omitted (pickup 1.5 beats); fermata ignored; bar 4 grace notes ignored (ending A4 vs Bb4 uncertain)"
+ },
+ "zimna-kaczka": {
+  "bpm": 124,
+  "time": "4/4",
+  "bars": 5,
+  "notes": "D4:0.5 F4:0.5 F4:0.5 Ab4:0.5 R:2 D4:0.5 F4:0.5 F4:0.5 Ab3:0.5 R:2 D4:0.5 F4:0.5 F4:0.5 Ab4:0.5 R:0.5 Bb4:0.5 R:0.5 C5:0.5 Ab4:1 F4:0.5 D4:0.5 F4:1 R:1 D4:0.5 F4:0.5 F4:0.5 Ab4:0.5",
+  "note": "F major; only ~5 bars of melody; first bar's leading rest omitted; Ab in 2nd phrase may be Ab3 (ledger) or Ab4; tempo 124"
+ }
+}

@@ -148,6 +148,7 @@
             <img src="logo/logo bez biale.png" alt="WIKSAS" class="footer-logo">
             <p>Nuty na trąbkę w B – zbiór do ćwiczenia i grania.</p>
             <p class="muted">© <span id="year"></span> WIKSAS</p>
+            <p class="muted credit">Dźwięk trąbki: FluidR3 GM SoundFont (CC BY 3.0) via <a href="https://github.com/gleitz/midi-js-soundfonts" target="_blank" rel="noopener">midi-js-soundfonts</a></p>
         </div>
     </footer>
 
@@ -168,12 +169,14 @@
                     <span class="viewer-motto" id="viewerMotto"></span>
                 </div>
                 <div class="viewer-actions">
+                    <button id="vPlay" title="Posłuchaj początku" aria-label="Posłuchaj fragmentu" hidden><svg class="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" /></svg><svg class="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" /></svg></button>
                     <button id="vPrev" title="Poprzednia (←)" aria-label="Poprzednia nuta"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" /></svg></button>
                     <button id="vNext" title="Następna (→)" aria-label="Następna nuta"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg></button>
                     <a id="vNewTab" target="_blank" rel="noopener" title="Otwórz w nowej karcie" aria-label="Otwórz w nowej karcie"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></svg></a>
                     <a id="vDownload" download title="Pobierz PDF" aria-label="Pobierz PDF"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" /></svg></a>
                     <button id="vClose" title="Zamknij (Esc)" aria-label="Zamknij"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" /></svg></button>
                 </div>
+                <div class="viewer-progress" id="viewerProgress"></div>
             </div>
             <div class="viewer-body">
                 <div class="viewer-loading" id="vLoading"><img id="vPlaceholder" alt=""><span></span></div>
