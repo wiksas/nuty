@@ -108,12 +108,22 @@
     ];
     let melodyI = 0;
 
-    let resuming;
+    let resuming, audioOut;
+    const IOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     function getAudio() {
         if (!audio) {
             // iOS: bez tego Web Audio milknie przy wyciszeniu dzwonka (przełącznik z boku) i nie gra w tle
             try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch { /* starsze przeglądarki */ }
             audio = new (window.AudioContext || window.webkitAudioContext)();
+            if (IOS && audio.createMediaStreamDestination) {
+                // iOS: sam Web Audio podlega przełącznikowi dzwonka; element <audio> już nie. Wyjście idzie przez niego.
+                // Start musi nastąpić w geście użytkownika, dlatego tutaj, a nie w masterIn().
+                audioOut = audio.createMediaStreamDestination();
+                const el = new Audio();
+                el.setAttribute('playsinline', '');
+                el.srcObject = audioOut.stream;
+                el.play().catch(() => {});
+            }
         }
         // iOS bywa 'interrupted' (np. po rozmowie), nie tylko 'suspended'
         if (audio.state !== 'running') resuming = Promise.resolve(audio.resume()).catch(() => {});
@@ -193,7 +203,7 @@
             wet.gain.value = .2;
             input.connect(conv); conv.connect(wet); wet.connect(comp);
         } catch { /* sam kompresor */ }
-        comp.connect(ctx.destination);
+        comp.connect(audioOut || ctx.destination);
         chain = { ctx, input };
         return input;
     }
