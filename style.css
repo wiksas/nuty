@@ -389,17 +389,19 @@ a { color: inherit; }
     .sheet-title { font-size: 1.05rem; }
     .sheet-meta { padding: 10px 12px 14px; }
     .sheet-open { display: none; }
-    .viewer-panel { width: 100vw; height: 100svh; height: 100vh; border-radius: 0; border: 0; }
-    .viewer-actions button, .viewer-actions a { width: 38px; height: 38px; }
+    .viewer-panel { width: 100vw; height: 100vh; height: 100svh; border-radius: 0; border: 0; }
+    .viewer-actions button, .viewer-actions a { width: 42px; height: 42px; }
     .viewer-title h3 { font-size: 1.15rem; }
-    .viewer-bar { padding-left: 12px; gap: 10px; }
+    .viewer-bar { flex-wrap: wrap; padding: 10px 12px; gap: 8px 10px; }
+    .viewer-title { flex: 1 1 0; }
+    .viewer-actions { order: 3; flex: 1 0 100%; justify-content: space-between; }
     .viewer-emblem { width: 38px; height: 38px; font-size: 19px; }
     .viewer-motto { display: none; }
     .viewer-fx { display: none; }
-    .toolbar { flex-direction: column; align-items: stretch; }
+    .toolbar { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
     .search { max-width: none; flex: none; }
     .trumpet { width: 104vw; max-width: none; margin-left: 2vw; }
-    .chips { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 4px 16px; scrollbar-width: none; }
+    .chips { flex-wrap: nowrap; overflow-x: auto; min-width: 0; margin: 0 -16px; padding: 4px 16px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
     .chip { white-space: nowrap; }
 }
 
