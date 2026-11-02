@@ -108,11 +108,37 @@
     ];
     let melodyI = 0;
 
+    let resuming;
     function getAudio() {
-        audio = audio || new (window.AudioContext || window.webkitAudioContext)();
-        if (audio.state === 'suspended') audio.resume();
+        if (!audio) {
+            // iOS: bez tego Web Audio milknie przy wyciszeniu dzwonka (przełącznik z boku) i nie gra w tle
+            try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch { /* starsze przeglądarki */ }
+            audio = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        // iOS bywa 'interrupted' (np. po rozmowie), nie tylko 'suspended'
+        if (audio.state !== 'running') resuming = Promise.resolve(audio.resume()).catch(() => {});
         return audio;
     }
+    // Na telefonie kontekst wolno odblokować tylko w geście użytkownika, a zegar rusza dopiero po resume():
+    // przed planowaniem nut czekamy na stan 'running'.
+    function audioReady() {
+        const ctx = getAudio();
+        return ctx.state === 'running' ? Promise.resolve(ctx) : Promise.resolve(resuming).then(() => ctx);
+    }
+    const UNLOCK_EVENTS = ['touchend', 'pointerup', 'click', 'keydown'];
+    function unlockAudio() {
+        const ctx = getAudio();
+        try { // pusty bufor w geście – odblokowuje dźwięk w Safari
+            const s = ctx.createBufferSource();
+            s.buffer = ctx.createBuffer(1, 1, 22050);
+            s.connect(ctx.destination);
+            s.start(0);
+        } catch { /* ignoruj */ }
+        Promise.resolve(resuming).then(() => {
+            if (ctx.state === 'running') UNLOCK_EVENTS.forEach(t => removeEventListener(t, unlockAudio, true));
+        });
+    }
+    UNLOCK_EVENTS.forEach(t => addEventListener(t, unlockAudio, { capture: true, passive: true }));
 
     // Częstotliwości (Hz) nut oktawy 4, równomierna skala, A4 = 440 Hz (pianogrid.com, tunableapp.com).
     // Inne oktawy = mnożenie/dzielenie przez 2. Numer MIDI: C4 = 60, A4 = 69.
@@ -198,8 +224,9 @@
         src.stop(t + dur + .08);
     }
     async function honk(midi) {
-        try { await loadSamples(); playSample(await sampleFor(midi), .9); }
-        catch { playNote(midiHz(midi)); }
+        getAudio(); // synchronicznie w geście kliknięcia – po await telefon już nie odblokuje dźwięku
+        try { await loadSamples(); const s = await sampleFor(midi); await audioReady(); playSample(s, .9); }
+        catch { await audioReady(); playNote(midiHz(midi)); }
     }
     (window.requestIdleCallback || (f => setTimeout(f, 2500)))(() => loadSamples().catch(() => {}));
 
@@ -642,7 +669,7 @@
             me.stop = () => { a.pause(); a.removeAttribute('src'); a.load(); };
             return;
         }
-        const ctx = getAudio();
+        const ctx = await audioReady();
         const spb = 60 / n.melody.bpm;
         const { ev, total } = parseMelody(n.melody);
 
