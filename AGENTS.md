@@ -6,14 +6,17 @@ Statyczna strona-dysk z nutami na trąbkę (GitHub Pages, repo `wiksas/nuty`, ga
 
 | Plik / folder | Rola |
 |---|---|
-| `index.html` | Markup: nagłówek, hero z trąbką (SVG), biblioteka, okno podglądu PDF |
-| `style.css` | Cały wygląd. Efekty motywów (`.fx`, `@keyframes fx-*`) są na końcu pliku |
-| `app.js` | Scroll-efekty, trąbka (dźwięk), filtry/wyszukiwarka, karty, okno podglądu |
-| `themes.js` | Definicje motywów utworów (kolory, emblem, motto, efekt w tle okna) |
+| `index.html` | Markup: nagłówek z przełącznikiem motywu, hero z trąbką (SVG w `<button>`), biblioteka, okno podglądu PDF |
+| `style.css` | Cały wygląd (tokeny jasny/ciemny w `:root` i `[data-theme="dark"]`). Efekty motywów (`.fx`, `@keyframes fx-*`) są na końcu pliku |
+| `DESIGN.md` | Kierunek wizualny, paleta, typografia, diale i powody decyzji. Czytaj przed zmianą wyglądu |
+| `app.js` | Motyw jasny/ciemny, scroll hero, trąbka (dźwięk), filtry/wyszukiwarka, karty, okno podglądu |
+| `themes.js` | Definicje motywów utworów (kolory, znak `mark`, motto, efekt przy otwarciu okna) |
 | `nuty.js` | **GENEROWANY** przez `tools/build.py`. Nie edytować ręcznie |
 | `thumbs/*.webp` | **GENEROWANE** miniatury 1. strony PDF. Nie edytować ręcznie |
 | `img/*.pdf` | Źródłowe nuty (PDF) |
-| `logo/` | Logo WIKSAS (`logo bez biale.png` jest używane na stronie) |
+| `logo/` | Logo WIKSAS: `logo bez czarne.png` (czarny napis) w trybie jasnym, `logo bez biale.png` (biały napis) w ciemnym i jako favicon |
+| `fonts/*.woff2` | Cormorant Garamond (lokalnie, latin + latin-ext, prosty i kursywa) |
+| `anti-slop/` | Raporty audytu antislop (`audit-NNN-RRRR-MM-DD.md`) |
 | `tools/build.py` | Skanuje `img/`, robi miniatury, generuje `nuty.js` |
 | `tools/meta.json` | Tytuł, kategoria i motyw każdej nuty (ręcznie edytowany) |
 | `tools/melodies.json` | Zapis początku melodii (do odsłuchu), klucz = id nuty |
@@ -72,14 +75,16 @@ Pułapki odsłuchu:
 Motyw to wpis w `window.THEMES` w `themes.js`:
 
 ```js
-nazwa: { c1: '#hex', c2: '#hex', emblem: '🎺', motto: 'Podpis w oknie (może być pusty).',
+nazwa: { c1: '#hex', c2: '#hex', mark: '♪', motto: 'Podpis w oknie (może być pusty).',
          fx: { type: 'fall', glyphs: ['❄', '❅'], n: 40, size: [10, 28], dur: [5, 10], drift: 80 } }
 ```
 
-- `c1` – główny akcent (obramowanie karty, kategoria, poświata okna), `c2` – kolor dodatkowy cząsteczek.
+- `c1` – kolor motywu: znak i pasek odsłuchu w oknie (mieszany z kolorem tekstu, żeby był czytelny na jasnym tle), cząsteczki. `c2` – drugi kolor cząsteczek. Kolor motywu nie trafia na karty w siatce (jeden akcent na stronie: mosiądz).
+- `mark` – jeden znak tekstowy (Unicode, nie emoji), np. `♫ ⚓ ☾ ✝ ♜`. Kod dokleja `U+FE0E`, żeby system nie podmienił go na kolorowe emoji. Znak, który ma tylko wersję emoji (np. 🦆), się nie nada.
 - `fx.type`: `fall` (opada), `rise` (unosi się), `twinkle` (migocze), `drift` (dryfuje w bok). `drift` w pikselach = rozrzut poziomy dla `fall`/`rise`.
-- `n` = liczba cząsteczek, `size` = px [min, max], `dur` = sekundy [min, max].
-- Efekty są rysowane tylko po bokach okna i wyłączone na telefonie oraz przy `prefers-reduced-motion` – nie dodawaj efektów nad PDF-em.
+- `n` = liczba cząsteczek (rysowana jest połowa), `size` = px [min, max], `dur` = sekundy [min, max], przycinane do 10 s.
+- Efekt to **jeden przelot przy otwarciu okna** (bez pętli), tylko po bokach okna, wyłączony na telefonie i przy `prefers-reduced-motion`. Nie dodawaj efektów nad PDF-em ani nieskończonych animacji.
+- `glyphs` też tylko znaki tekstowe, bez emoji.
 - Po dodaniu motywu użyj jego nazwy w `theme` w `meta.json` i uruchom `build.py`.
 
 ## Reguły i pułapki
@@ -92,11 +97,13 @@ nazwa: { c1: '#hex', c2: '#hex', emblem: '🎺', motto: 'Podpis w oknie (może b
   - `filter` na obrazach kart i na SVG trąbki,
   - ładowania PDF do `iframe` w trakcie animacji otwarcia (jest celowe opóźnienie 380 ms w `openViewer`).
   Animuj tylko `transform` i `opacity`.
-- Elementy scroll-efektów hero: `.hero` ma 200vh, `.hero-stage` jest `sticky`; postęp `p` (0–1) liczy `update()` w `app.js` i ustawia zmienne CSS `--p`, `--sc`, `--rot`, `--tx`, `--ty`.
+- Hero: zwykła sekcja (bez `sticky` i bez `200vh`). Postęp `p` (0–1) liczy `update()` w `app.js` z przewinięcia hero i ustawia zmienną CSS `--p` na `.hero`; z niej idzie ruch trąbki, a wentyle/fale/nutki są sterowane bezpośrednio. Przy `prefers-reduced-motion` `update()` nie rusza trąbki.
+- Motyw jasny/ciemny: atrybut `data-theme` na `<html>`, zapis w `localStorage` (`theme`). Skrypt w `<head>` ustawia zapisany tryb przed malowaniem; domyślnie jasny. Nowe kolory dodawaj jako zmienne w obu blokach (`:root` i `[data-theme="dark"]`) i sprawdzaj kontrast (≥ 4,5:1 dla tekstu) w obu.
+- Filtry kategorii to przyciski z `aria-pressed` (nie zakładki). Trąbka jest w `<button id="trumpetBtn">`, działa z klawiatury.
 - Przycisk ▶ i efekty w oknie nut korzystają z jednego `AudioContext` (`getAudio()`); wszystko trafia przez `masterIn()` (kompresor + pogłos). Nowe dźwięki podłączaj tam, nie do `ctx.destination`.
 - Okno podglądu używa natywnego viewera PDF w `iframe`. Gdy `navigator.pdfViewerEnabled === false` (część mobilnych przeglądarek), pokazuje przycisk „Otwórz nuty” w nowej karcie.
 - Adres nuty to `index.html#<id>` (id = slug nazwy pliku PDF). Zmiana nazwy pliku zmienia link do nuty.
-- Zmiany tekstów/UI po polsku, w stylu istniejącym (krótko, bez emoji w komunikatach – emoji tylko jako emblematy motywów).
+- Zmiany tekstów/UI po polsku, w stylu istniejącym (krótko, bez emoji, bez em dashy). Przed zmianą wyglądu przeczytaj `DESIGN.md`.
 
 ## Commity
 

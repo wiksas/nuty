@@ -5,40 +5,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuty na trąbkę · WIKSAS</title>
-    <meta name="description" content="Moja biblioteka nut na trąbkę.">
-    <meta name="theme-color" content="#0d0a07">
+    <meta name="description" content="Moja biblioteka nut na trąbkę w B♭: podgląd, PDF do pobrania i odsłuch początku.">
+    <meta name="theme-color" content="#f4eee1">
+    <script>
+        // zapisany wybór motywu przed pierwszym malowaniem, żeby strona nie mignęła jasnym tłem
+        try { if (localStorage.getItem('theme') === 'dark') document.documentElement.dataset.theme = 'dark'; } catch (e) { /* bez localStorage zostaje jasny */ }
+    </script>
     <link rel="icon" type="image/png" href="logo/logo bez biale.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="preload" href="fonts/cormorant-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="progress" id="progress"></div>
-    <div class="ambient" id="ambient" aria-hidden="true"></div>
-
     <header class="topbar" id="topbar">
-        <a class="logo" href="#top" aria-label="WIKSAS – na górę">
-            <img src="logo/logo bez biale.png" alt="WIKSAS">
+        <a class="logo" href="#top" aria-label="WIKSAS, na górę strony">
+            <img class="logo-light" src="logo/logo bez czarne.png" alt="" width="500" height="500" loading="lazy">
+            <img class="logo-dark" src="logo/logo bez biale.png" alt="" width="500" height="500" loading="lazy">
         </a>
-        <nav>
+        <nav aria-label="Główna">
             <a href="#biblioteka">Biblioteka</a>
-            <a href="#kontakt">O mnie</a>
+            <button class="theme-toggle" id="themeToggle" type="button">Tryb ciemny</button>
         </nav>
     </header>
 
-    <!-- HERO: wysoki wrapper + sticky scena; scroll steruje trąbką -->
+    <!-- HERO: scroll naciska wentyle i wypuszcza nutki, klik gra -->
     <section class="hero" id="top">
-        <div class="hero-stage" id="heroStage">
-            <div class="hero-glow"></div>
+        <div class="hero-text">
+            <h1>Nuty na <em>trąbkę</em></h1>
+            <p class="lede"><span id="heroCount">28 utworów</span> na trąbkę w B♭, od Hejnału po Take Five. Każdy otworzysz tutaj, pobierzesz w PDF, a przy większości posłuchasz początku.</p>
+        </div>
 
-            <div class="hero-text" id="heroText">
-                <p class="eyebrow">Prywatny zbiór nut</p>
-                <h1>Nuty na <em>trąbkę</em></h1>
-            </div>
-
-            <svg class="trumpet" id="trumpet" viewBox="0 0 900 420" role="img" aria-label="Trąbka – kliknij, żeby zagrać">
+        <button class="trumpet-btn" id="trumpetBtn" type="button" aria-label="Zagraj na trąbce">
+            <svg class="trumpet" id="trumpet" viewBox="0 0 900 420" aria-hidden="true" focusable="false">
                 <defs>
                     <linearGradient id="brass" gradientUnits="userSpaceOnUse" x1="0" y1="50" x2="0" y2="340">
                         <stop offset="0" stop-color="#8a5a12" />
@@ -65,8 +63,14 @@
                 </defs>
 
                 <g>
-                    <!-- rury (rysują się przy wczytaniu) -->
+                    <!-- rury (rysują się przy wczytaniu); spód = ciemny obrys, żeby mosiądz nie znikał na jasnym papierze -->
                     <g class="tubes" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <g class="draw edge">
+                            <path pathLength="1" d="M 70 180 H 335" />
+                            <path pathLength="1" d="M 345 258 H 150 C 78 258 78 336 150 336 H 610 C 682 336 682 258 610 258 H 448" />
+                            <path pathLength="1" d="M 200 180 V 258" class="brace" />
+                            <path pathLength="1" d="M 520 180 V 258" class="brace" />
+                        </g>
                         <g class="draw">
                             <path pathLength="1" d="M 70 180 H 335" />
                             <path pathLength="1" d="M 345 258 H 150 C 78 258 78 336 150 336 H 610 C 682 336 682 258 610 258 H 448" />
@@ -77,7 +81,7 @@
 
                     <!-- dzwon -->
                     <path class="bell-body" d="M 455 170 C 600 170 720 152 797 56 A 22 124 0 0 1 797 304 C 720 208 600 190 455 190 Z" fill="url(#brassH)" stroke="#6b440c" stroke-width="3" />
-                    <ellipse class="bell-rim-in" cx="797" cy="180" rx="22" ry="124" fill="url(#bellInner)" stroke="#ffe9a0" stroke-width="4" />
+                    <ellipse class="bell-rim-in" cx="797" cy="180" rx="22" ry="124" fill="url(#bellInner)" stroke="#c8962b" stroke-width="4" />
                     <path class="bell-shine" d="M 480 174 C 610 172 720 156 790 70" fill="none" stroke="#fff6d0" stroke-width="3" stroke-linecap="round" opacity=".55" />
 
                     <!-- ustnik -->
@@ -104,55 +108,51 @@
                 </g>
 
                 <!-- fale dźwięku -->
-                <g class="waves" fill="none" stroke="#f4d77f" stroke-linecap="round">
+                <g class="waves" fill="none" stroke-linecap="round">
                     <path d="M 838 110 Q 874 180 838 250" />
                     <path d="M 862 84 Q 912 180 862 276" />
                     <path d="M 886 58 Q 950 180 886 302" />
                 </g>
 
                 <!-- nutki wylatujące z dzwonu -->
-                <g class="notes" id="trumpetNotes" fill="#f4d77f" font-family="'Segoe UI Symbol','Noto Sans Symbols 2',serif" font-size="46"></g>
+                <g class="notes" id="trumpetNotes" font-family="'Segoe UI Symbol','Noto Sans Symbols 2',serif" font-size="46"></g>
             </svg>
-
-            <a class="scroll-cue" id="scrollCue" href="#biblioteka">
-                <span>Przewiń</span>
-                <i></i>
-            </a>
-        </div>
+        </button>
+        <p class="trumpet-hint">kliknij trąbkę, a zagra</p>
     </section>
 
-    <main>
-        <section class="library" id="biblioteka">
-            <div class="section-head reveal">
-                <p class="eyebrow">Biblioteka</p>
-                <h2>Wszystkie nuty</h2>
-                <div class="staff" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-                <p class="count"><b id="countNum">0</b> <span id="countLabel">utworów</span> · kliknij kartę, żeby otworzyć</p>
-            </div>
+    <div class="staff" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
 
-            <div class="toolbar reveal">
-                <label class="search">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg>
-                    <input id="search" type="search" placeholder="Szukaj utworu…" autocomplete="off" aria-label="Szukaj utworu">
-                </label>
-                <div class="chips" id="chips" role="tablist" aria-label="Kategorie"></div>
+    <main class="library" id="biblioteka">
+        <div class="library-head">
+            <div>
+                <h2>Biblioteka</h2>
+                <p class="count" aria-live="polite"><span id="countText">28 utworów</span></p>
             </div>
+            <label class="search">
+                <span class="search-label">Szukaj</span>
+                <input id="search" type="search" placeholder="tytuł albo kategoria" autocomplete="off">
+            </label>
+        </div>
 
-            <div class="sheet-grid" id="gallery"></div>
-            <p class="empty" id="empty" hidden>Nic tu nie gra. Spróbuj innej frazy.</p>
-        </section>
+        <div class="chips" id="chips" role="group" aria-label="Kategorie"></div>
+
+        <div class="sheet-grid" id="gallery"></div>
+        <div class="empty" id="empty" hidden>
+            <p id="emptyMsg"></p>
+            <button class="btn-quiet" id="emptyReset" type="button">Wyczyść filtry</button>
+        </div>
+        <noscript>
+            <p class="empty">Biblioteka potrzebuje włączonego JavaScriptu, bo lista nut i podgląd są budowane w przeglądarce.</p>
+        </noscript>
     </main>
 
-    <footer class="footer" id="kontakt">
-        <div class="footer-inner reveal">
-            <img src="logo/logo bez biale.png" alt="WIKSAS" class="footer-logo">
-            <p>Nuty na trąbkę w B – zbiór do ćwiczenia i grania.</p>
-            <p class="muted">© <span id="year"></span> WIKSAS</p>
-            <p class="muted credit">Dźwięk trąbki: FluidR3 GM SoundFont (CC BY 3.0) via <a href="https://github.com/gleitz/midi-js-soundfonts" target="_blank" rel="noopener">midi-js-soundfonts</a></p>
-        </div>
+    <footer class="footer">
+        <p>Nuty na trąbkę w B♭, zbiór do ćwiczenia i grania. © <span id="year"></span> WIKSAS</p>
+        <p class="credit">Dźwięk trąbki: FluidR3 GM SoundFont (CC BY 3.0) przez <a href="https://github.com/gleitz/midi-js-soundfonts" target="_blank" rel="noopener">midi-js-soundfonts</a></p>
     </footer>
 
-    <button class="to-top" id="toTop" aria-label="Wróć na górę">
+    <button class="to-top" id="toTop" type="button" aria-label="Wróć na górę">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
     </button>
 
@@ -162,28 +162,28 @@
         <div class="viewer-fx" id="viewerFx" aria-hidden="true"></div>
         <div class="viewer-panel" id="viewerPanel">
             <div class="viewer-bar">
-                <span class="viewer-emblem" id="viewerEmblem" aria-hidden="true"></span>
+                <span class="viewer-mark" id="viewerMark" aria-hidden="true"></span>
                 <div class="viewer-title">
                     <span class="viewer-tag" id="viewerTag"></span>
                     <h3 id="viewerTitle"></h3>
                     <span class="viewer-motto" id="viewerMotto"></span>
                 </div>
                 <div class="viewer-actions">
-                    <button id="vPlay" title="Posłuchaj początku" aria-label="Posłuchaj fragmentu" hidden><svg class="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" /></svg><svg class="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" /></svg></button>
-                    <button id="vPrev" title="Poprzednia (←)" aria-label="Poprzednia nuta"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" /></svg></button>
-                    <button id="vNext" title="Następna (→)" aria-label="Następna nuta"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg></button>
+                    <button id="vPlay" type="button" title="Posłuchaj początku" aria-label="Posłuchaj fragmentu" hidden><svg class="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" /></svg><svg class="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" /></svg></button>
+                    <button id="vPrev" type="button" title="Poprzednia (←)" aria-label="Poprzednia nuta"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" /></svg></button>
+                    <button id="vNext" type="button" title="Następna (→)" aria-label="Następna nuta"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg></button>
                     <a id="vNewTab" target="_blank" rel="noopener" title="Otwórz w nowej karcie" aria-label="Otwórz w nowej karcie"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></svg></a>
                     <a id="vDownload" download title="Pobierz PDF" aria-label="Pobierz PDF"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14" /></svg></a>
-                    <button id="vClose" title="Zamknij (Esc)" aria-label="Zamknij"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" /></svg></button>
+                    <button id="vClose" type="button" title="Zamknij (Esc)" aria-label="Zamknij"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" /></svg></button>
                 </div>
                 <div class="viewer-progress" id="viewerProgress"></div>
             </div>
             <div class="viewer-body">
-                <div class="viewer-loading" id="vLoading"><img id="vPlaceholder" alt=""><span></span></div>
+                <div class="viewer-loading" id="vLoading"><img id="vPlaceholder" alt=""><p><span class="spinner" aria-hidden="true"></span>Wczytuję nuty…</p></div>
                 <iframe id="vFrame" title="Podgląd nut"></iframe>
                 <div class="viewer-fallback" id="vFallback" hidden>
                     <p>Ta przeglądarka nie pokazuje PDF-ów w oknie.</p>
-                    <a id="vFallbackLink" class="btn" target="_blank" rel="noopener">Otwórz nuty</a>
+                    <a id="vFallbackLink" class="btn" target="_blank" rel="noopener">Otwórz nuty w nowej karcie</a>
                 </div>
             </div>
         </div>

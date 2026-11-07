@@ -14,5 +14,9 @@ Plik wpisany w `ignore` w `tools/meta.json` jest pomijany (np. `Untitled.pdf`, 3
 
 ## Motywy
 
-Każda nuta ma motyw (kolory, emblem, motto i efekt w tle okna): pole `"theme"` w `tools/meta.json`.
+Każda nuta ma motyw (kolory, znak tekstowy, motto i efekt przy otwarciu okna): pole `"theme"` w `tools/meta.json`.
 Gotowe motywy i ich efekty są w `themes.js` – można tam dopisać własne i potem użyć ich nazwy w `meta.json`.
+
+## Wygląd
+
+Kierunek wizualny, paleta, typografia i powody decyzji są w `DESIGN.md`. Strona ma tryb jasny (domyślny) i ciemny (przełącznik w nagłówku, wybór zapamiętany w przeglądarce).
