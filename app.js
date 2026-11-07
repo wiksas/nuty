@@ -70,8 +70,8 @@
         });
         FLY.forEach(n => {
             const t = clamp((p - n.s) / .32);
-            const x = 840 + t * 190 * n.dx;
-            const yy = 160 - t * 210 * n.dy + Math.sin(t * 7) * 14;
+            const x = 845 + t * 190 * n.dx;
+            const yy = 126 - t * 210 * n.dy + Math.sin(t * 7) * 14;
             n.el.setAttribute('transform', `translate(${x.toFixed(1)} ${yy.toFixed(1)}) rotate(${(n.r * t).toFixed(1)}) scale(${(n.sc * (.6 + t * .6)).toFixed(2)})`);
             n.el.style.opacity = (Math.sin(Math.PI * t) * .95).toFixed(3);
         });
@@ -267,7 +267,7 @@
     function spawnNote() {
         const el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         el.textContent = ['♪', '♫', '♩', '♬'][Math.random() * 4 | 0];
-        el.setAttribute('x', 835); el.setAttribute('y', 175);
+        el.setAttribute('x', 840); el.setAttribute('y', 145);
         el.setAttribute('class', 'spawned');
         el.style.fontSize = '46px';
         el.style.fontFamily = "'Segoe UI Symbol','Noto Sans Symbols 2',serif";

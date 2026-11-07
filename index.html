@@ -36,9 +36,9 @@
         </div>
 
         <button class="trumpet-btn" id="trumpetBtn" type="button" aria-label="Zagraj na trąbce">
-            <svg class="trumpet" id="trumpet" viewBox="0 40 900 300" aria-hidden="true" focusable="false">
+            <svg class="trumpet" id="trumpet" viewBox="0 15 900 310" aria-hidden="true" focusable="false">
                 <defs>
-                    <linearGradient id="brassH" gradientUnits="userSpaceOnUse" x1="500" y1="0" x2="810" y2="0">
+                    <linearGradient id="brassH" gradientUnits="userSpaceOnUse" x1="640" y1="0" x2="1230" y2="0">
                         <stop offset="0" stop-color="#d4a23a" />
                         <stop offset=".55" stop-color="#f3cf68" />
                         <stop offset="1" stop-color="#ffefb8" />
@@ -49,14 +49,14 @@
                         <stop offset=".7" stop-color="#c8962b" />
                         <stop offset="1" stop-color="#5a3808" />
                     </linearGradient>
-                    <linearGradient id="rod" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0" stop-color="#7a4f10" />
-                        <stop offset=".35" stop-color="#f6dd8c" />
-                        <stop offset=".7" stop-color="#c8962b" />
-                        <stop offset="1" stop-color="#5a3808" />
-                    </linearGradient>
                     <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0" stop-color="#7d7d7d" />
+                        <stop offset=".35" stop-color="#f4f4f2" />
+                        <stop offset=".7" stop-color="#b9b9b6" />
+                        <stop offset="1" stop-color="#5f5f5d" />
+                    </linearGradient>
+                    <linearGradient id="silverH" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0" stop-color="#6f6f6d" />
                         <stop offset=".35" stop-color="#f4f4f2" />
                         <stop offset=".7" stop-color="#b9b9b6" />
                         <stop offset="1" stop-color="#5f5f5d" />
@@ -65,76 +65,103 @@
                         <stop offset="0" stop-color="#1a0f03" />
                         <stop offset="1" stop-color="#7a4d0c" />
                     </radialGradient>
-                    <!-- osie rur: rura dzwonu z tylnym łukiem, suwak 3. wentyla, rura prowadząca z głównym suwakiem -->
-                    <path id="tBack" pathLength="1" d="M 505 165 H 205 A 35 35 0 0 0 205 235 H 336" />
-                    <path id="tSlide3" pathLength="1" d="M 430 266 V 294 H 300 A 12 12 0 0 0 300 318 H 454 V 266" />
-                    <path id="tLead" pathLength="1" d="M 118 205 H 600 A 28.5 28.5 0 0 1 600 262 H 456" />
+                    <!-- Osie rur trąbki B♭ (widok z prawej strony grającego, układ jak Yamaha YTR, współrzędne zdjęcia 1280 px):
+                         rura dzwonu schodzi za rurą prowadzącą do tylnego łuku, który wchodzi od dołu w 1. wentyl;
+                         rura prowadząca biegnie od ustnika przed wentylami do głównego suwaka strojenia i wraca w 3. wentyl;
+                         suwak 1. wentyla w tylnym łuku, suwak 3. wentyla w głównym suwaku, krótkie kolanko 2. wentyla przed 1. wentylem -->
+                    <path id="tBell" pathLength="1" d="M 645 183 L 250 226 A 84 83 0 0 0 250 392 H 400" />
+                    <path id="tSlide1" pathLength="1" d="M 392 318 H 262 A 22 22 0 0 0 262 362 H 392" />
+                    <path id="tSlide3" pathLength="1" d="M 520 322 H 812 A 13.5 13.5 0 0 1 812 349 H 520" />
+                    <path id="tLead" pathLength="1" d="M 196 205 H 820 A 80 80 0 0 1 820 365 H 540" />
+                    <path id="tSlide2" pathLength="1" d="M 452 334 H 398 A 17 17 0 0 0 398 368 H 452" />
+                    <path id="tNickel" pathLength="1" d="M 615 205 H 795 M 548 365 H 795" />
                 </defs>
 
-                <!-- łączniki między rurami (pod rurami) -->
-                <g class="braces" fill="url(#casing)" stroke="#4a2e06" stroke-width="1.5">
-                    <rect x="252" y="168" width="7" height="34" rx="2" />
-                    <rect x="556" y="168" width="7" height="34" rx="2" />
-                    <rect x="287" y="207" width="7" height="27" rx="2" />
-                </g>
-
-                <!-- rury: obrys, mosiądz, cień od spodu, połysk od góry; rysują się przy wczytaniu -->
-                <g class="tubes back">
-                    <g class="t-edge"><use href="#tBack" /><use href="#tSlide3" class="slide" /></g>
-                    <g class="t-body"><use href="#tBack" /><use href="#tSlide3" class="slide" /></g>
-                    <g class="t-shade"><use href="#tBack" /><use href="#tSlide3" class="slide" /></g>
-                    <g class="t-hi"><use href="#tBack" /><use href="#tSlide3" class="slide" /></g>
-                </g>
-                <g class="tubes front">
-                    <g class="t-edge"><use href="#tLead" /></g>
-                    <g class="t-body"><use href="#tLead" /></g>
-                    <g class="t-shade"><use href="#tLead" /></g>
-                    <g class="t-hi"><use href="#tLead" /></g>
-                </g>
-
-                <!-- dzwon -->
-                <path class="bell-body" d="M 500 157 C 640 157 760 140 805 50 A 20 115 0 0 1 805 280 C 760 190 640 173 500 173 Z" fill="url(#brassH)" stroke="#6b440c" stroke-width="2.5" />
-                <ellipse class="bell-rim-in" cx="805" cy="165" rx="20" ry="115" fill="url(#bellInner)" stroke="#e9c766" stroke-width="5" />
-                <ellipse class="bell-rim-in" cx="805" cy="165" rx="22.5" ry="117.5" fill="none" stroke="#6b440c" stroke-width="1.5" />
-                <path class="bell-shine" d="M 515 160 C 650 158 758 143 797 62" fill="none" stroke="#fff6d0" stroke-width="3" stroke-linecap="round" opacity=".6" />
-                <path class="bell-shine" d="M 515 171 C 650 172 758 188 797 268" fill="none" stroke="#8a5a12" stroke-width="2.5" stroke-linecap="round" opacity=".45" />
-
-                <!-- ustnik (posrebrzany) i nasadka -->
-                <g class="mouthpiece">
-                    <path d="M 112 199 L 56 201 C 44 201 38 193 28 191 L 24 191 Q 20 191 20 195 V 215 Q 20 219 24 219 L 28 219 C 38 217 44 209 56 209 L 112 211 Z" fill="url(#silver)" stroke="#4d4d4b" stroke-width="1.5" />
-                    <rect x="108" y="195" width="16" height="20" rx="3" fill="url(#rod)" stroke="#4a2e06" stroke-width="1.5" />
-                </g>
-
-                <!-- wentyle: przycisk z perłową wkładką, kapsel, obudowa z pierścieniem, kapsel dolny -->
-                <g class="valves">
-                    <g class="valve" data-i="0" transform="translate(350 0)">
-                        <g class="btn"><rect x="-2.5" y="84" width="5" height="30" fill="#d8b04a" /><ellipse cx="0" cy="82" rx="15" ry="6" fill="#f4e2a0" stroke="#5a3808" stroke-width="1.5" /><ellipse cx="0" cy="81" rx="9" ry="3" fill="#fbf7ee" /></g>
-                        <rect x="-16" y="118" width="32" height="138" rx="2" fill="url(#casing)" stroke="#4a2e06" stroke-width="1.5" />
-                        <rect x="-17" y="148" width="34" height="5" fill="#b8862a" />
-                        <rect x="-19" y="108" width="38" height="12" rx="4" fill="url(#rod)" stroke="#4a2e06" stroke-width="1.5" />
-                        <rect x="-18" y="254" width="36" height="14" rx="4" fill="url(#rod)" stroke="#4a2e06" stroke-width="1.5" />
+                <g transform="translate(14 10) scale(.66)">
+                    <!-- łącznik przy dzwonie (pod rurami) -->
+                    <g class="braces" fill="url(#casing)" stroke="#4a2e06" stroke-width="2">
+                        <rect x="864" y="188" width="10" height="34" rx="3" />
                     </g>
-                    <g class="valve" data-i="1" transform="translate(396 0)">
-                        <g class="btn"><rect x="-2.5" y="84" width="5" height="30" fill="#d8b04a" /><ellipse cx="0" cy="82" rx="15" ry="6" fill="#f4e2a0" stroke="#5a3808" stroke-width="1.5" /><ellipse cx="0" cy="81" rx="9" ry="3" fill="#fbf7ee" /></g>
-                        <rect x="-16" y="118" width="32" height="138" rx="2" fill="url(#casing)" stroke="#4a2e06" stroke-width="1.5" />
-                        <rect x="-17" y="148" width="34" height="5" fill="#b8862a" />
-                        <rect x="-19" y="108" width="38" height="12" rx="4" fill="url(#rod)" stroke="#4a2e06" stroke-width="1.5" />
-                        <rect x="-18" y="254" width="36" height="14" rx="4" fill="url(#rod)" stroke="#4a2e06" stroke-width="1.5" />
+
+                    <!-- rury za wentylami: obrys, mosiądz, cień od spodu, połysk od góry; rysują się przy wczytaniu -->
+                    <g class="tubes back">
+                        <g class="t-edge"><use href="#tBell" /><use href="#tSlide1" class="slide" /><use href="#tSlide3" class="slide" /></g>
+                        <g class="t-body"><use href="#tBell" /><use href="#tSlide1" class="slide" /><use href="#tSlide3" class="slide" /></g>
+                        <g class="t-shade"><use href="#tBell" /><use href="#tSlide1" class="slide" /><use href="#tSlide3" class="slide" /></g>
+                        <g class="t-hi"><use href="#tBell" /><use href="#tSlide1" class="slide" /><use href="#tSlide3" class="slide" /></g>
                     </g>
-                    <g class="valve" data-i="2" transform="translate(442 0)">
-                        <g class="btn"><rect x="-2.5" y="84" width="5" height="30" fill="#d8b04a" /><ellipse cx="0" cy="82" rx="15" ry="6" fill="#f4e2a0" stroke="#5a3808" stroke-width="1.5" /><ellipse cx="0" cy="81" rx="9" ry="3" fill="#fbf7ee" /></g>
-                        <rect x="-16" y="118" width="32" height="138" rx="2" fill="url(#casing)" stroke="#4a2e06" stroke-width="1.5" />
-                        <rect x="-17" y="148" width="34" height="5" fill="#b8862a" />
-                        <rect x="-19" y="108" width="38" height="12" rx="4" fill="url(#rod)" stroke="#4a2e06" stroke-width="1.5" />
-                        <rect x="-18" y="254" width="36" height="14" rx="4" fill="url(#rod)" stroke="#4a2e06" stroke-width="1.5" />
+
+                    <!-- czara -->
+                    <path class="bell-body" d="M 640 172 C 900 168 1080 160 1150 110 C 1180 85 1195 50 1205 22 A 25 161 0 0 1 1205 344 C 1195 316 1180 281 1150 256 C 1080 206 900 198 640 194 Z" fill="url(#brassH)" stroke="#6b440c" stroke-width="3" />
+                    <ellipse class="bell-rim-in" cx="1205" cy="183" rx="25" ry="161" fill="url(#bellInner)" stroke="#e9c766" stroke-width="7" />
+                    <ellipse class="bell-rim-in" cx="1205" cy="183" rx="29" ry="165" fill="none" stroke="#6b440c" stroke-width="2" />
+                    <path class="bell-shine" d="M 660 175 C 900 171 1080 163 1148 115 C 1172 96 1186 68 1196 40" fill="none" stroke="#fff6d0" stroke-width="4" stroke-linecap="round" opacity=".6" />
+                    <path class="bell-shine" d="M 660 192 C 900 196 1080 204 1148 252 C 1172 270 1186 298 1196 326" fill="none" stroke="#8a5a12" stroke-width="3.5" stroke-linecap="round" opacity=".45" />
+
+                    <!-- wentyle 1-2-3 (1. najbliżej ustnika): niklowany przycisk i trzonek, kapsel, obudowa z pierścieniem, kapsel dolny -->
+                    <g class="valves">
+                        <g class="valve" data-i="0" transform="translate(410 0)">
+                            <g class="btn"><rect x="-5" y="136" width="10" height="36" fill="url(#silverH)" /><ellipse cx="0" cy="134" rx="19" ry="6" fill="url(#silver)" stroke="#4d4d4b" stroke-width="2" /><ellipse cx="0" cy="131" rx="15" ry="3.5" fill="#f4f4f2" /></g>
+                            <rect x="-20" y="190" width="40" height="262" rx="3" fill="url(#casing)" stroke="#4a2e06" stroke-width="2" />
+                            <rect x="-21" y="262" width="42" height="9" fill="#b8862a" stroke="#6b440c" stroke-width="1.5" />
+                            <rect x="-22" y="168" width="44" height="24" rx="5" fill="url(#silverH)" stroke="#4d4d4b" stroke-width="2" />
+                            <rect x="-21" y="446" width="42" height="16" rx="5" fill="url(#silverH)" stroke="#4d4d4b" stroke-width="2" />
+                        </g>
+                        <g class="valve" data-i="1" transform="translate(457 0)">
+                            <g class="btn"><rect x="-5" y="136" width="10" height="36" fill="url(#silverH)" /><ellipse cx="0" cy="134" rx="19" ry="6" fill="url(#silver)" stroke="#4d4d4b" stroke-width="2" /><ellipse cx="0" cy="131" rx="15" ry="3.5" fill="#f4f4f2" /></g>
+                            <rect x="-20" y="190" width="40" height="262" rx="3" fill="url(#casing)" stroke="#4a2e06" stroke-width="2" />
+                            <rect x="-21" y="262" width="42" height="9" fill="#b8862a" stroke="#6b440c" stroke-width="1.5" />
+                            <rect x="-22" y="168" width="44" height="24" rx="5" fill="url(#silverH)" stroke="#4d4d4b" stroke-width="2" />
+                            <rect x="-21" y="446" width="42" height="16" rx="5" fill="url(#silverH)" stroke="#4d4d4b" stroke-width="2" />
+                        </g>
+                        <g class="valve" data-i="2" transform="translate(504 0)">
+                            <g class="btn"><rect x="-5" y="136" width="10" height="36" fill="url(#silverH)" /><ellipse cx="0" cy="134" rx="19" ry="6" fill="url(#silver)" stroke="#4d4d4b" stroke-width="2" /><ellipse cx="0" cy="131" rx="15" ry="3.5" fill="#f4f4f2" /></g>
+                            <rect x="-20" y="190" width="40" height="262" rx="3" fill="url(#casing)" stroke="#4a2e06" stroke-width="2" />
+                            <rect x="-21" y="262" width="42" height="9" fill="#b8862a" stroke="#6b440c" stroke-width="1.5" />
+                            <rect x="-22" y="168" width="44" height="24" rx="5" fill="url(#silverH)" stroke="#4d4d4b" stroke-width="2" />
+                            <rect x="-21" y="446" width="42" height="16" rx="5" fill="url(#silverH)" stroke="#4d4d4b" stroke-width="2" />
+                        </g>
+                    </g>
+
+                    <!-- rury przed wentylami: rura prowadząca z głównym suwakiem strojenia, kolanko 2. wentyla, niklowane rurki suwaka -->
+                    <g class="tubes front">
+                        <g class="t-edge"><use href="#tLead" /><use href="#tSlide2" class="slide" /></g>
+                        <g class="t-body"><use href="#tLead" /><use href="#tSlide2" class="slide" /></g>
+                        <g class="t-nickel"><use href="#tNickel" class="slide" /></g>
+                        <g class="t-shade"><use href="#tLead" /><use href="#tSlide2" class="slide" /></g>
+                        <g class="t-hi"><use href="#tLead" /><use href="#tSlide2" class="slide" /></g>
+                    </g>
+
+                    <!-- osprzęt: haczyk na mały palec, siodełko kciuka (suwak 1.), pierścień i ogranicznik (suwak 3.), klapka na wodę -->
+                    <g class="fittings" fill="none" stroke-linecap="round">
+                        <path d="M 530 196 C 527 160 536 140 557 138" stroke="#5a3808" stroke-width="11" />
+                        <path d="M 530 196 C 527 160 536 140 557 138" stroke="#d4a23a" stroke-width="6" />
+                        <path d="M 330 262 C 332 300 342 312 356 312 C 370 312 380 300 382 262 M 356 312 V 318" stroke="#4d4d4b" stroke-width="10" />
+                        <path d="M 330 262 C 332 300 342 312 356 312 C 370 312 380 300 382 262 M 356 312 V 318" stroke="#dcdcd8" stroke-width="5" />
+                        <circle cx="612" cy="280" r="24" stroke="#4d4d4b" stroke-width="10" />
+                        <circle cx="612" cy="280" r="24" stroke="#dcdcd8" stroke-width="5" />
+                        <path d="M 612 304 V 318" stroke="#4d4d4b" stroke-width="8" />
+                        <rect x="645" y="300" width="125" height="7" rx="3" fill="url(#silver)" stroke="#4d4d4b" stroke-width="1.5" />
+                        <rect x="692" y="293" width="34" height="20" rx="3" fill="url(#silver)" stroke="#4d4d4b" stroke-width="1.5" />
+                        <ellipse cx="709" cy="289" rx="10" ry="4" fill="url(#silver)" stroke="#4d4d4b" stroke-width="1.5" />
+                        <path d="M 866 356 L 916 296" stroke="#4d4d4b" stroke-width="10" />
+                        <path d="M 866 356 L 916 296" stroke="#dcdcd8" stroke-width="5" />
+                        <circle cx="864" cy="358" r="8" fill="url(#silver)" stroke="#4d4d4b" stroke-width="1.5" />
+                    </g>
+
+                    <!-- ustnik i niklowana nasadka rury prowadzącej -->
+                    <g class="mouthpiece">
+                        <rect x="108" y="193" width="92" height="24" rx="4" fill="url(#silver)" stroke="#4d4d4b" stroke-width="2" />
+                        <rect x="186" y="190" width="12" height="30" rx="3" fill="url(#silver)" stroke="#4d4d4b" stroke-width="2" />
+                        <path d="M 112 197 L 66 199 C 50 199 42 186 30 183 L 20 182 Q 12 182 12 190 V 220 Q 12 228 20 228 L 30 227 C 42 224 50 211 66 211 L 112 213 Z" fill="url(#silver)" stroke="#4d4d4b" stroke-width="2" />
                     </g>
                 </g>
 
-                <!-- fale dźwięku -->
+                <!-- fale dźwięku (oś czary: y ≈ 131) -->
                 <g class="waves" fill="none" stroke-linecap="round">
-                    <path d="M 840 95 Q 876 165 840 235" />
-                    <path d="M 864 69 Q 914 165 864 261" />
-                    <path d="M 888 43 Q 952 165 888 287" />
+                    <path d="M 845 61 Q 881 131 845 201" />
+                    <path d="M 869 35 Q 919 131 869 227" />
+                    <path d="M 893 9 Q 957 131 893 253" />
                 </g>
 
                 <!-- nutki wylatujące z dzwonu -->
