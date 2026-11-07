@@ -154,11 +154,16 @@ button { font: inherit; color: inherit; }
     font-family: var(--serif); font-style: italic; font-size: 1.2rem; color: var(--muted);
 }
 
-/* rysowanie trąbki przy wczytaniu: wprowadza instrument, raz */
-.tubes .draw path { stroke: url(#brass); stroke-width: 18; stroke-dasharray: 1 1; animation: draw 1.4s var(--ease) .1s both; }
-.tubes .draw path.brace { stroke-width: 7; animation-delay: .8s; }
-.tubes .edge path { stroke: var(--edge); stroke-width: 23; }
-.tubes .edge path.brace { stroke-width: 11; }
+/* rury trąbki: cztery warstwy tej samej osi (obrys, mosiądz, cień od spodu, połysk od góry), rysują się raz przy wczytaniu */
+.tubes { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.tubes use { stroke-dasharray: 1 1; animation: draw 1.1s var(--ease) .45s both; }
+.tubes.front use { animation-delay: .1s; }
+.tubes use.slide { animation-duration: .6s; animation-delay: .85s; }
+.t-edge { stroke: var(--edge); stroke-width: 20; }
+.t-body { stroke: #d4a23a; stroke-width: 14; }
+.t-shade { stroke: #9c6a17; stroke-width: 4; transform: translateY(3.5px); }
+.t-hi { stroke: #fff0c2; stroke-width: 3; transform: translateY(-3.5px); opacity: .9; }
+.braces { animation: fade .5s ease 1s both; }
 
 .bell-body, .bell-rim-in, .bell-shine { animation: fade .8s ease .8s both; }
 .mouthpiece { animation: fade .6s ease .7s both; }
